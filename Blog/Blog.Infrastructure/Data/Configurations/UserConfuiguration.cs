@@ -8,10 +8,10 @@ namespace Blog.Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            //builder.ToTable("Users").HasKey(p => p.Id);
-            //builder.Property(x => x.Id).UseIdentityColumn();
+            builder.ToTable("Users").HasKey(p => p.Id);
+            builder.Property(x => x.Id).UseIdentityColumn();
 
-            //// Отключаем каскадное удаление
+            // Отключаем каскадное удаление
             //builder.HasOne(f => f.User)
             //      .WithMany()
             //      .HasForeignKey(f => f.UserId)

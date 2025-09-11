@@ -8,7 +8,8 @@ namespace Blog.Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Comment> builder)
         {
-            throw new NotImplementedException();
+            builder.ToTable("Comments").HasKey(p => p.Id);
+            builder.Property(x => x.Id).UseIdentityColumn();
         }
     }
 }

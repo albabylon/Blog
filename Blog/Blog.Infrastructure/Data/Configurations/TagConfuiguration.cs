@@ -8,7 +8,8 @@ namespace Blog.Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Tag> builder)
         {
-            throw new NotImplementedException();
+            builder.ToTable("Tags").HasKey(p => p.Id);
+            builder.Property(x => x.Id).UseIdentityColumn();
         }
     }
 }

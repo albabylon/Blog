@@ -12,6 +12,7 @@ namespace Blog.Infrastructure.Data
         public DbSet<Article> Articles { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<ArticleTag> ArticleTag { get; set; }
 
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
@@ -35,6 +36,7 @@ namespace Blog.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new CommentConfuiguration());
             modelBuilder.ApplyConfiguration(new ArticleConfuiguration());
             modelBuilder.ApplyConfiguration(new TagConfuiguration());
+            modelBuilder.ApplyConfiguration(new ArticleTagConfuiguration());
         }
     }
 }
