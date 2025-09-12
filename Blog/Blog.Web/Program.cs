@@ -3,9 +3,15 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+//swagger
+
+
+//---builder tio app---
 var app = builder.Build();
 
+
 // Configure the HTTP request pipeline.
+//middlewares
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -18,6 +24,7 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+//endpoints
 app.MapStaticAssets();
 
 app.MapControllerRoute(

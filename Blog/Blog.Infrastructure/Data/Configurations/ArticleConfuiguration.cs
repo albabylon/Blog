@@ -10,6 +10,12 @@ namespace Blog.Infrastructure.Data.Configurations
         {
             builder.ToTable("Articles").HasKey(p => p.Id);
             builder.Property(x => x.Id).UseIdentityColumn();
+
+            // Отключаем каскадное удаление
+            builder.HasOne(a => a.Author)
+                .WithMany(u => u.Articles)
+                .HasForeignKey(a => a.AuthorId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

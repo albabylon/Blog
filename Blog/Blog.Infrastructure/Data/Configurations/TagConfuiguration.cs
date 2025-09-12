@@ -10,6 +10,9 @@ namespace Blog.Infrastructure.Data.Configurations
         {
             builder.ToTable("Tags").HasKey(p => p.Id);
             builder.Property(x => x.Id).UseIdentityColumn();
+
+            // Ограничение уникальности для имени тега
+            builder.HasIndex(t => t.Name).IsUnique();
         }
     }
 }

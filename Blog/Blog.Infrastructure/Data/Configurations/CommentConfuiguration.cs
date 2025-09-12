@@ -10,6 +10,12 @@ namespace Blog.Infrastructure.Data.Configurations
         {
             builder.ToTable("Comments").HasKey(p => p.Id);
             builder.Property(x => x.Id).UseIdentityColumn();
+
+            // Включаем каскадное удаление. При удалении статьи удаляем комментарии
+            builder.HasOne(c => c.Article)
+                .WithMany(a => a.Comments)
+                .HasForeignKey(c => c.ArticleId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
