@@ -1,16 +1,20 @@
 using System.Diagnostics;
+using AutoMapper;
 using Blog.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Web.Controllers
 {
-    public class HomeController : Controller
+    [ApiController]
+    [Route("[controller]")]
+    public class UserController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        //private IRoomRepository _repository;
+        private readonly IMapper _mapper;
 
-        public HomeController(ILogger<HomeController> logger)
+        public UserController(IMapper mapper)
         {
-            _logger = logger;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
