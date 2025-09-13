@@ -9,7 +9,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Infrastructure", "Blog
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Contracts", "Blog.Contracts\Blog.Contracts.csproj", "{5A1E9756-C563-4422-B580-47BF3DC433ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Entities", "Blog.Entities\Blog.Entities.csproj", "{C02D292A-6412-4943-AB54-F6EEDFD38171}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Domain", "Blog.Domain\Blog.Domain.csproj", "{C02D292A-6412-4943-AB54-F6EEDFD38171}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "presentation", "presentation", "{36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{EF2792A0-5BB1-4075-B7FB-743C672D0781}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infrastructure", "infrastructure", "{A29CE49E-C62C-47BA-BDCC-9350A828138F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{171D0861-C798-4968-A808-B4E5EDA90CEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +44,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{36A12CE8-8BDD-443A-90F5-5F0FF56CFCAD} = {36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}
+		{86EC5A1C-0897-4540-8515-74F0CE115154} = {A29CE49E-C62C-47BA-BDCC-9350A828138F}
+		{5A1E9756-C563-4422-B580-47BF3DC433ED} = {EF2792A0-5BB1-4075-B7FB-743C672D0781}
+		{C02D292A-6412-4943-AB54-F6EEDFD38171} = {EF2792A0-5BB1-4075-B7FB-743C672D0781}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {792964AF-645D-4A97-9547-82042BC70080}
