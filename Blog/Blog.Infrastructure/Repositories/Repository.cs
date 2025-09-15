@@ -9,7 +9,7 @@ namespace Blog.Infrastructure.Repositories
         protected DbContext _context;
 
 
-        public Repository(ApplicationDbContext appContext)
+        public Repository(BlogDbContext appContext)
         {
             _context = appContext;
         }

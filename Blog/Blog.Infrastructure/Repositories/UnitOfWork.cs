@@ -6,11 +6,11 @@ namespace Blog.Infrastructure.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly ApplicationDbContext _appContext;
+        private readonly BlogDbContext _appContext;
         private Dictionary<Type, object> _repositories;
 
 
-        public UnitOfWork(ApplicationDbContext appContext)
+        public UnitOfWork(BlogDbContext appContext)
         {
             _appContext = appContext;
             _repositories ??= new Dictionary<Type, object>();

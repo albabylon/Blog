@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Blog.Infrastructure.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<User>
+    public class BlogDbContext : IdentityDbContext<User>
     {
         public DbSet<Article> Articles { get; set; }
         public DbSet<Tag> Tags { get; set; }
@@ -15,7 +15,7 @@ namespace Blog.Infrastructure.Data
         public DbSet<ArticleTag> ArticleTag { get; set; }
 
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        public BlogDbContext(DbContextOptions<BlogDbContext> options) : base(options)
         {
             if (!Database.GetService<IRelationalDatabaseCreator>().Exists())
             {
