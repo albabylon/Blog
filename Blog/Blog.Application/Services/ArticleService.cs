@@ -21,14 +21,10 @@ namespace Blog.Application.Services
         }
 
 
-        public async Task CreateArticleAsync(CreateArticleDTO dto, int authorId)
+        public async Task<ArticleDTO> GetArticleAsync(int id)
         {
-            var article = _mapper.Map<Article>(dto);    
-
-            article.AuthorId = authorId;
-            article.Title = dto.Title;
-
-            await _articleRepos?.Update(article);
+            var result = await _articleRepos?.Get(id);
+            return _mapper.Map<ArticleDTO>(result);
         }
 
         public async Task<IEnumerable<ArticleDTO>> GetAllArticlesAsync()
@@ -37,10 +33,36 @@ namespace Blog.Application.Services
             return _mapper.Map<IEnumerable<ArticleDTO>>(result);
         }
 
-        public async Task<ArticleDTO> GetArticleAsync(int id)
+        public async Task CreateArticleAsync(CreateArticleDTO dto, int authorId)
         {
-            var result = await _articleRepos?.Get(id);
-            return _mapper.Map<ArticleDTO>(result);
+            var article = _mapper.Map<Article>(dto);    
+
+            article.AuthorId = authorId;
+            article.Title = dto.Title;
+            article.Content = dto.Content;
+
+            await _articleRepos?.Create(article);
+        }
+
+        public async Task EditArticleAsync(EditArticleDTO dto, int articleId)
+        {
+            var article = await _articleRepos?.Get(articleId) 
+                ?? throw new NullReferenceException("Статья не найдена");
+
+            if (string.IsNullOrEmpty(dto.Title))
+                article.Title = dto.Title;
+
+            if (string.IsNullOrEmpty(dto.Content))
+                article.Content = dto.Content;
+
+            await _articleRepos.Update(article);
+        }
+
+        public async Task DeleteArticleAsync(int id)
+        {
+            var article = await _articleRepos?.Get(id);
+
+            await _articleRepos?.Delete(article);
         }
     }
 }
