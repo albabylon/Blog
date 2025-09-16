@@ -1,4 +1,4 @@
-﻿using Blog.Contracts.Models.Tags;
+﻿using Blog.Application.Models.Tags;
 using FluentValidation;
 
 namespace Blog.Application.Validation.Tags

@@ -7,25 +7,23 @@ using Blog.Infrastructure.Extensions;
 using Blog.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var loggerFactory = LoggerFactory.Create(builder =>
-{
-    builder.AddConsole();
-    builder.SetMinimumLevel(LogLevel.Debug);
-});
-var mapperConfig = new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfile()), loggerFactory);
-
+//mapping
+var mapperConfig = new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfile()));
 var mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 
+//db connection
+var connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services
-    .AddDbContext<BlogDbContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")))
+    .AddDbContext<BlogDbContext>(opt => opt.UseSqlServer(connection))
     .AddUnitOfWork()
-    .AddCustomRepository<Tag, TagsRepository>();
-
-builder.Services
+    .AddCustomRepository<Article, ArticlesRepository>()
+    .AddCustomRepository<Comment, CommentsRepository>()
+    .AddCustomRepository<Tag, TagsRepository>()
     .AddIdentity<User, IdentityRole>(opt =>
         {
             opt.Password.RequiredLength = 5;
@@ -36,29 +34,33 @@ builder.Services
         })
     .AddEntityFrameworkStores<BlogDbContext>();
 
-builder.Services.AddControllersWithViews();
+//builder.Services.AddControllersWithViews();
+builder.Services.AddControllers();
 builder.Services.AddRazorPages();
-
-//swagger
+builder.Services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "BlogApi", Version = "v1" }); });
 
 
 //---builder tio app---
 var app = builder.Build();
 
 
-// Configure the HTTP request pipeline.
 //middlewares
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+    app.UseSwagger();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BlogApi v1"));
+}
+else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseRouting();
-
 app.UseAuthorization();
+app.UseAuthentication();
 
 //endpoints
 app.MapStaticAssets();
@@ -67,5 +69,4 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
-
 app.Run();

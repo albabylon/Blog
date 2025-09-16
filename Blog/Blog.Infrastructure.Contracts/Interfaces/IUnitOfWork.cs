@@ -1,4 +1,4 @@
-﻿namespace Blog.Contracts.Interfaces
+﻿namespace Blog.Infrastructure.Contracts.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {

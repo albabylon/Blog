@@ -1,4 +1,4 @@
-﻿namespace Blog.Contracts.Models.Tags
+﻿namespace Blog.Application.Models.Tags
 {
     public class AddTagRequest
     {

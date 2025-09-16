@@ -1,5 +1,5 @@
-﻿using Blog.Contracts.Interfaces;
-using Blog.Infrastructure.Repositories;
+﻿using Blog.Infrastructure.Contracts.Interfaces;
+using Blog.Infrastructure.Repositories.Base;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Blog.Infrastructure.Extensions

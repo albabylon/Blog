@@ -4,9 +4,9 @@ using Blog.Infrastructure.Repositories.Base;
 
 namespace Blog.Infrastructure.Repositories
 {
-    public class TagsRepository : Repository<Tag>
+    public class CommentsRepository : Repository<Comment>
     {
-        public TagsRepository(BlogDbContext appContext) : base(appContext)
+        public CommentsRepository(BlogDbContext appContext) : base(appContext)
         {
 
         }

@@ -1,8 +1,8 @@
-﻿using Blog.Contracts.Interfaces;
+﻿using Blog.Infrastructure.Contracts.Interfaces;
 using Blog.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace Blog.Infrastructure.Repositories
+namespace Blog.Infrastructure.Repositories.Base
 {
     public class UnitOfWork : IUnitOfWork
     {
