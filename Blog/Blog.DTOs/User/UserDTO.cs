@@ -1,4 +1,4 @@
-﻿namespace Blog.DTOs
+﻿namespace Blog.DTOs.User
 {
     public class UserDTO
     {

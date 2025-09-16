@@ -1,12 +1,17 @@
 ﻿using AutoMapper;
+using Blog.Domain.Entities;
+using Blog.DTOs.Article;
 
 namespace Blog.Application.Common.Mapping
 {
     public class MappingProfile : Profile
     {
-        //CreateMap<Address, AddressInfo>();
-        //    CreateMap<HomeOptions, InfoResponse>()
-        //        .ForMember(m => m.AddressInfo,
-        //            opt => opt.MapFrom(src => src.Address));
+        public MappingProfile()
+        {
+            CreateMap<Article, ArticleDTO>()
+                .ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => src.Author.UserName));
+
+            CreateMap<CreateArticleDTO, Article>();
+        }
     }
 }

@@ -1,5 +1,7 @@
 using AutoMapper;
 using Blog.Application.Common.Mapping;
+using Blog.Application.Contracts.Interfaces;
+using Blog.Application.Services;
 using Blog.Domain.Entities;
 using Blog.Domain.Identity;
 using Blog.Infrastructure.Data;
@@ -10,6 +12,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//app services
+builder.Services
+    .AddScoped<IArticleService, ArticleService>()
+    .AddScoped<ICommentService, CommentService>()
+    .AddScoped<ITagService, TagService>()
+    .AddScoped<IUserService, UserService>();
 
 //mapping
 var mapperConfig = new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfile()));

@@ -1,4 +1,4 @@
-﻿namespace Blog.DTOs
+﻿namespace Blog.DTOs.Tag
 {
     public class TagDTO
     {
