@@ -1,4 +1,5 @@
-﻿using Blog.Contracts.Entities;
+﻿using Blog.Domain.Entities;
+using Blog.Domain.Identity;
 using Blog.Infrastructure.Data.Configurations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

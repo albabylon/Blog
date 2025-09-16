@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Blog.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 
-namespace Blog.Contracts.Entities
+namespace Blog.Domain.Identity
 {
     public class User : IdentityUser
     {

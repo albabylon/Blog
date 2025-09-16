@@ -1,4 +1,4 @@
-﻿using Blog.Contracts.Entities;
+﻿using Blog.Domain.Entities;
 using Blog.Infrastructure.Data;
 
 namespace Blog.Infrastructure.Repositories

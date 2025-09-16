@@ -1,7 +1,7 @@
 ﻿using Blog.Contracts.Models.Tags;
 using FluentValidation;
 
-namespace Blog.Contracts.Validation.Tags
+namespace Blog.Application.Validation.Tags
 {
     public class AddTagRequestValidation : AbstractValidator<AddTagRequest>
     {

@@ -1,15 +1,16 @@
-﻿using Blog.Entities.Base;
+﻿using Blog.Domain.Base;
+using Blog.Domain.Identity;
 
-namespace Blog.Contracts.Entities
+namespace Blog.Domain.Entities
 {
     public class Comment : BaseEntity
     {
         public string Content { get; set; }
 
         public int ArticleId { get; set; }
-        public Article Article { get; set; }
+        public Article? Article { get; set; }
 
         public int UserId { get; set; }
-        public User User { get; set; }
+        public User? User { get; set; }
     }
 }

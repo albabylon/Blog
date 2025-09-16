@@ -1,11 +1,12 @@
 using AutoMapper;
+using Blog.Application.Common.Mapping;
+using Blog.Domain.Entities;
+using Blog.Domain.Identity;
 using Blog.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
 using Blog.Infrastructure.Extensions;
 using Blog.Infrastructure.Repositories;
-using Blog.Contracts.Entities;
 using Microsoft.AspNetCore.Identity;
-using Blog.Contracts.Common.Mapping;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +26,7 @@ builder.Services
     .AddCustomRepository<Tag, TagsRepository>();
 
 builder.Services
-    .AddIdentity<User, IdentityRole>(opt => 
+    .AddIdentity<User, IdentityRole>(opt =>
         {
             opt.Password.RequiredLength = 5;
             opt.Password.RequireNonAlphanumeric = false;

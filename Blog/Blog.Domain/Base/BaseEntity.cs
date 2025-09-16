@@ -1,4 +1,4 @@
-﻿namespace Blog.Entities.Base
+﻿namespace Blog.Domain.Base
 {
     public class BaseEntity
     {

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace Blog.Contracts.Common.Mapping
+namespace Blog.Application.Common.Mapping
 {
     public class MappingProfile : Profile
     {
