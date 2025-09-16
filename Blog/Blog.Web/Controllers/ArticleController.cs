@@ -1,10 +1,11 @@
 ﻿using Blog.Application.Contracts.Interfaces;
+using Blog.DTOs.Article;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Web.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class ArticleController : Controller
     {
         private readonly IArticleService _articleService;
@@ -15,9 +16,12 @@ namespace Blog.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateArticle()
+        public async Task<IActionResult> CreateArticle([FromBody] CreateArticleDTO dto)
         {
-            await _articleService.CreateArticleAsync();
+            if(int.TryParse(User.FindFirst("id").Value, out int userId))
+                await _articleService.CreateArticleAsync(dto, userId);
+            
+            return Ok();
         }
     }
 }
