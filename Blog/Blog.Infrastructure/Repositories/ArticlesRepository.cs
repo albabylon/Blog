@@ -12,7 +12,7 @@ namespace Blog.Infrastructure.Repositories
 
         }
 
-        public async Task<IEnumerable<Article>> GetAllByAuthorId(string authorId)
+        public async Task<IEnumerable<Article>> GetAllByAuthorId(Guid authorId)
         {
             return await Set.Where(x => x.AuthorId ==  authorId).ToListAsync() 
                 ?? throw new Exception($"{authorId} не найден");          

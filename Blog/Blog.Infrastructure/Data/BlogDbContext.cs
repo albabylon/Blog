@@ -33,11 +33,11 @@ namespace Blog.Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.ApplyConfiguration(new UserConfuiguration());
-            modelBuilder.ApplyConfiguration(new CommentConfuiguration());
-            modelBuilder.ApplyConfiguration(new ArticleConfuiguration());
-            modelBuilder.ApplyConfiguration(new TagConfuiguration());
-            modelBuilder.ApplyConfiguration(new ArticleTagConfuiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new CommentConfiguration());
+            modelBuilder.ApplyConfiguration(new ArticleConfiguration());
+            modelBuilder.ApplyConfiguration(new TagConfiguration());
+            modelBuilder.ApplyConfiguration(new ArticleTagConfiguration());
         }
     }
 }

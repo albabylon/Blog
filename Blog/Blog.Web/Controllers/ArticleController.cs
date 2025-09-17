@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Web.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
     public class ArticleController : Controller
     {
         private readonly IArticleService _articleService;
@@ -18,15 +16,17 @@ namespace Blog.Web.Controllers
 
 
         [HttpPost]
+        [Route("Create")]
         public async Task<IActionResult> Create([FromBody] CreateArticleDTO dto)
         {
-            var userId = User.FindFirst("id").Value;
+            var userId = Guid.Parse(User.FindFirst("id").Value);
             await _articleService.CreateArticleAsync(dto, userId);
             
             return Ok();
         }
 
         [HttpPut("{id}")]
+        [Route("Edit")]
         public async Task<IActionResult> Edit([FromBody] EditArticleDTO dto, int id)
         {
             if (id != dto.Id)
@@ -34,7 +34,7 @@ namespace Blog.Web.Controllers
 
             try
             {
-                var userId = User.FindFirst("id").Value;
+                var userId = Guid.Parse(User.FindFirst("id").Value);
                 await _articleService.EditArticleAsync(dto, userId);
                 return Ok(new { Message = "Статья успешно обновлена" });
             }
@@ -49,6 +49,7 @@ namespace Blog.Web.Controllers
         }
 
         [HttpDelete]
+        [Route("Delete")]
         public async Task<IActionResult> Delete(int id)
         {
             await _articleService.DeleteArticleAsync(id);
@@ -63,7 +64,7 @@ namespace Blog.Web.Controllers
         }
 
         [HttpGet("{guid}")]
-        public async Task<IActionResult> AllArticle(string guid)
+        public async Task<IActionResult> AllArticle(Guid guid)
         {
             await _articleService.GetAllArticlesByAuthorAsync(guid);
             return Ok();
