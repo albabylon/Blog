@@ -19,7 +19,7 @@ namespace Blog.Web.Controllers
         [Route("Create")]
         public async Task<IActionResult> Create([FromBody] CreateArticleDTO dto)
         {
-            var userId = Guid.Parse(User.FindFirst("id").Value);
+            var userId = User.FindFirst("id").Value;
             await _articleService.CreateArticleAsync(dto, userId);
             
             return Ok();
@@ -34,7 +34,7 @@ namespace Blog.Web.Controllers
 
             try
             {
-                var userId = Guid.Parse(User.FindFirst("id").Value);
+                var userId = User.FindFirst("id").Value;
                 await _articleService.EditArticleAsync(dto, userId);
                 return Ok(new { Message = "Статья успешно обновлена" });
             }
@@ -64,7 +64,7 @@ namespace Blog.Web.Controllers
         }
 
         [HttpGet("{guid}")]
-        public async Task<IActionResult> AllArticle(Guid guid)
+        public async Task<IActionResult> AllArticle(string guid)
         {
             await _articleService.GetAllArticlesByAuthorAsync(guid);
             return Ok();

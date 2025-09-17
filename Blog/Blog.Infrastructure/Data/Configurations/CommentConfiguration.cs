@@ -9,7 +9,9 @@ namespace Blog.Infrastructure.Data.Configurations
         public void Configure(EntityTypeBuilder<Comment> builder)
         {
             builder.ToTable("Comments").HasKey(p => p.Id);
-            builder.Property(x => x.Id).UseIdentityColumn();
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
+            //builder.Property(x => x.Id).UseIdentityColumn(); sqlserver
+
 
             // Включаем каскадное удаление. При удалении статьи удаляем комментарии
             builder.HasOne(c => c.Article)

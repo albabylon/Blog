@@ -9,7 +9,8 @@ namespace Blog.Infrastructure.Data.Configurations
         public void Configure(EntityTypeBuilder<Article> builder)
         {
             builder.ToTable("Articles").HasKey(p => p.Id);
-            builder.Property(x => x.Id).UseIdentityColumn();
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
+            //builder.Property(x => x.Id).UseIdentityColumn(); sqlserver
 
             // Отключаем каскадное удаление
             builder.HasOne(a => a.Author)

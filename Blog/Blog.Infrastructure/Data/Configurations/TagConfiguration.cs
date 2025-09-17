@@ -9,7 +9,8 @@ namespace Blog.Infrastructure.Data.Configurations
         public void Configure(EntityTypeBuilder<Tag> builder)
         {
             builder.ToTable("Tags").HasKey(p => p.Id);
-            builder.Property(x => x.Id).UseIdentityColumn();
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
+            //builder.Property(x => x.Id).UseIdentityColumn(); sqlserver
 
             // Ограничение уникальности для имени тега
             builder.HasIndex(t => t.Name).IsUnique();

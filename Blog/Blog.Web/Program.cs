@@ -26,7 +26,8 @@ builder.Services.AddSingleton(mapper);
 //db connection
 var connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services
-    .AddDbContext<BlogDbContext>(opt => opt.UseSqlServer(connection))
+    .AddDbContext<BlogDbContext>(opt => opt.UseSqlite(connection))
+    //.AddDbContext<BlogDbContext>(opt => opt.UseSqlServer(connection)) sqlserver
     .AddUnitOfWork()
     .AddCustomRepository<Article, ArticlesRepository>()
     .AddCustomRepository<Comment, CommentsRepository>()

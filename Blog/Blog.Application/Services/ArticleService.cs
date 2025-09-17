@@ -34,13 +34,13 @@ namespace Blog.Application.Services
             return _mapper.Map<IEnumerable<ArticleDTO>>(result);
         }
 
-        public async Task<IEnumerable<ArticleDTO>> GetAllArticlesByAuthorAsync(Guid authorId)
+        public async Task<IEnumerable<ArticleDTO>> GetAllArticlesByAuthorAsync(string authorId)
         {
             var result = await _articleRepos?.GetAllByAuthorId(authorId);
             return _mapper.Map<IEnumerable<ArticleDTO>>(result);
         }
 
-        public async Task CreateArticleAsync(CreateArticleDTO dto, Guid authorId)
+        public async Task CreateArticleAsync(CreateArticleDTO dto, string authorId)
         {
             var article = _mapper.Map<Article>(dto);
 
@@ -51,7 +51,7 @@ namespace Blog.Application.Services
             await _articleRepos?.Create(article);
         }
 
-        public async Task EditArticleAsync(EditArticleDTO dto, Guid authorId)
+        public async Task EditArticleAsync(EditArticleDTO dto, string authorId)
         {
             var article = await _articleRepos?.Get(dto.Id)
                 ?? throw new NotFoundException($"Статья {dto.Id} не найдена");

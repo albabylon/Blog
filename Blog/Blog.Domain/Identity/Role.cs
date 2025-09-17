@@ -2,7 +2,7 @@
 
 namespace Blog.Domain.Identity
 {
-    public class Role : IdentityRole<Guid>
+    public class Role : IdentityRole
     {
         public Role()
         {
