@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Blog.Application.Contracts.Interfaces;
+using Blog.Application.Exceptions;
 using Blog.Domain.Entities;
 using Blog.DTOs.Article;
 using Blog.Infrastructure.Contracts.Interfaces;
@@ -21,9 +22,9 @@ namespace Blog.Application.Services
         }
 
 
-        public async Task<ArticleDTO> GetArticleAsync(int id)
+        public async Task<ArticleDTO> GetArticleAsync(int articleId)
         {
-            var result = await _articleRepos?.Get(id);
+            var result = await _articleRepos?.Get(articleId);
             return _mapper.Map<ArticleDTO>(result);
         }
 
@@ -33,9 +34,15 @@ namespace Blog.Application.Services
             return _mapper.Map<IEnumerable<ArticleDTO>>(result);
         }
 
-        public async Task CreateArticleAsync(CreateArticleDTO dto, int authorId)
+        public async Task<IEnumerable<ArticleDTO>> GetAllArticlesByAuthorAsync(string authorId)
         {
-            var article = _mapper.Map<Article>(dto);    
+            var result = await _articleRepos?.GetAllByAuthorId(authorId);
+            return _mapper.Map<IEnumerable<ArticleDTO>>(result);
+        }
+
+        public async Task CreateArticleAsync(CreateArticleDTO dto, string authorId)
+        {
+            var article = _mapper.Map<Article>(dto);
 
             article.AuthorId = authorId;
             article.Title = dto.Title;
@@ -44,24 +51,24 @@ namespace Blog.Application.Services
             await _articleRepos?.Create(article);
         }
 
-        public async Task EditArticleAsync(EditArticleDTO dto, int articleId)
+        public async Task EditArticleAsync(EditArticleDTO dto, string authorId)
         {
-            var article = await _articleRepos?.Get(articleId) 
-                ?? throw new NullReferenceException("Статья не найдена");
+            var article = await _articleRepos?.Get(dto.Id)
+                ?? throw new NotFoundException($"Статья {dto.Id} не найдена");
 
-            if (string.IsNullOrEmpty(dto.Title))
-                article.Title = dto.Title;
+            if (article.AuthorId != authorId)
+                throw new UnauthorizedAccessException($"Нет прав доступа для редактирования этой статьи");
 
-            if (string.IsNullOrEmpty(dto.Content))
-                article.Content = dto.Content;
+            article.Title = dto.Title;
+            article.Content = dto.Content;
+            article.UpdatedAt = DateTime.UtcNow;
 
             await _articleRepos.Update(article);
         }
 
-        public async Task DeleteArticleAsync(int id)
+        public async Task DeleteArticleAsync(int articleId)
         {
-            var article = await _articleRepos?.Get(id);
-
+            var article = await _articleRepos?.Get(articleId);
             await _articleRepos?.Delete(article);
         }
     }

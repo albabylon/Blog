@@ -10,7 +10,7 @@ namespace Blog.Domain.Entities
 
         public bool IsPublished { get; set; } = false;
 
-        public int AuthorId { get; set; }
+        public string AuthorId { get; set; }
         public User? Author { get; set; }
 
         public virtual ICollection<Comment>? Comments { get; set; }

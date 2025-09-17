@@ -4,10 +4,11 @@ namespace Blog.Application.Contracts.Interfaces
 {
     public interface IArticleService
     {
-        Task<ArticleDTO> GetArticleAsync(int id);
+        Task<ArticleDTO> GetArticleAsync(int articleId);
         Task<IEnumerable<ArticleDTO>> GetAllArticlesAsync();
-        Task CreateArticleAsync(CreateArticleDTO dto, int authorId);
-        Task EditArticleAsync(EditArticleDTO dto, int articleId);
-        Task DeleteArticleAsync(int id);
+        Task<IEnumerable<ArticleDTO>> GetAllArticlesByAuthorAsync(string authorId);
+        Task CreateArticleAsync(CreateArticleDTO dto, string authorId);
+        Task EditArticleAsync(EditArticleDTO dto, string authorId);
+        Task DeleteArticleAsync(int articleId);
     }
 }

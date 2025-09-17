@@ -9,7 +9,6 @@ using Blog.Infrastructure.Extensions;
 using Blog.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,33 +42,40 @@ builder.Services
         })
     .AddEntityFrameworkStores<BlogDbContext>();
 
-//builder.Services.AddControllersWithViews();
-builder.Services.AddControllers();
+builder.Services.AddControllersWithViews();
+//builder.Services.AddControllers();
 builder.Services.AddRazorPages();
-builder.Services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "BlogApi", Version = "v1" }); });
-
+//builder.Services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "BlogApi", Version = "v1" }); });
+//builder.Services.AddCors(opt =>
+//{
+//    opt.AddPolicy("AllowAll", builder =>
+//    {
+//        builder.AllowAnyOrigin()
+//               .AllowAnyMethod()
+//               .AllowAnyHeader();
+//    });
+//});
 
 //---builder tio app---
 var app = builder.Build();
 
 
 //middlewares
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-    app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BlogApi v1"));
-}
-else
+if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
 
+//app.UseDeveloperExceptionPage();
+//app.UseSwagger();
+//app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BlogApi v1"));
+
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthorization();
 app.UseAuthentication();
+//app.UseCors("AllowAll");
 
 //endpoints
 app.MapStaticAssets();
