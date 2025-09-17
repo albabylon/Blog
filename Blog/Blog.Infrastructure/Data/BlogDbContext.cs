@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Blog.Infrastructure.Data
 {
-    public class BlogDbContext : IdentityDbContext<User>
+    public class BlogDbContext : IdentityDbContext<User, Role, Guid>
     {
         public DbSet<Article> Articles { get; set; }
         public DbSet<Tag> Tags { get; set; }

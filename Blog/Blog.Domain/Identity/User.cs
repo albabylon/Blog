@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Blog.Domain.Identity
 {
-    public class User : IdentityUser
+    public class User : IdentityUser<Guid>
     {
         public string Nickname { get; set; }
         public string Bio { get; set; }
