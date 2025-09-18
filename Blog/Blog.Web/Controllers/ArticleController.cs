@@ -15,8 +15,6 @@ namespace Blog.Web.Controllers
         }
 
 
-        [HttpPost]
-        [Route("Create")]
         public async Task<IActionResult> Create([FromBody] CreateArticleDTO dto)
         {
             var userId = User.FindFirst("id").Value;
@@ -25,8 +23,6 @@ namespace Blog.Web.Controllers
             return Ok();
         }
 
-        [HttpPut("{id}")]
-        [Route("Edit")]
         public async Task<IActionResult> Edit([FromBody] EditArticleDTO dto, int id)
         {
             if (id != dto.Id)
@@ -48,22 +44,18 @@ namespace Blog.Web.Controllers
             }
         }
 
-        [HttpDelete]
-        [Route("Delete")]
         public async Task<IActionResult> Delete(int id)
         {
             await _articleService.DeleteArticleAsync(id);
             return Ok();
         }
 
-        [HttpGet]
         public async Task<IActionResult> AllArticle()
         {
             await _articleService.GetAllArticlesAsync();
             return Ok();
         }
 
-        [HttpGet("{guid}")]
         public async Task<IActionResult> AllArticle(string guid)
         {
             await _articleService.GetAllArticlesByAuthorAsync(guid);

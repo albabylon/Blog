@@ -1,5 +1,6 @@
 ﻿using Blog.Application.Contracts.Interfaces;
 using Blog.Application.Exceptions;
+using Blog.DTOs.User;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Web.Controllers.Account
@@ -13,21 +14,21 @@ namespace Blog.Web.Controllers.Account
             _userService = userService;
         }
 
-
         public IActionResult Index()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult Register()
+        [Route("[action]")]
+        public async Task<IActionResult> Register(CreateUserDTO createUser)
         {
             try
             {
-                _userService.CreateUserAsync(new DTOs.User.CreateUserDTO());
-                return View();
+                await _userService.CreateUserAsync(createUser);
+                return Json(createUser);
             }
-            catch (UserNotCreatedException)
+            catch (UserProblemException)
             {
                 return Ok("Не получилось");
             };

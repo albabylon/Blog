@@ -2,7 +2,7 @@
 
 namespace Blog.Web.Controllers
 {
-    public class HomeController : Controller
+    public class TagController : Controller
     {
         public IActionResult Index()
         {

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Blog.Web.Controllers
+namespace Blog.Web.Controllers.Account
 {
-    public class HomeController : Controller
+    public class ProfileController : Controller
     {
         public IActionResult Index()
         {

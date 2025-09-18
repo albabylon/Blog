@@ -14,7 +14,10 @@ namespace Blog.Application.Common.Mapping
             CreateMap<CreateUserDTO, User>()
                 .ForMember(d => d.Email, o => o.MapFrom(s => s.Email))
                 .ForMember(d => d.UserName, o => o.MapFrom(s => s.Nickname));
-
+            CreateMap<LoginUserDTO, User>();
+            CreateMap<EditUserDTO, User>()
+                .ForMember(d => d.Email, o => o.MapFrom(s => s.Email))
+                .ForMember(d => d.UserName, o => o.MapFrom(s => s.Nickname));
 
             //article
             CreateMap<Article, ArticleDTO>()

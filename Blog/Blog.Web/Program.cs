@@ -49,7 +49,17 @@ builder.Services.AddRazorPages();
 //---build to app---
 var app = builder.Build();
 
-
+//roles
+using (var scope = app.Services.CreateScope())
+{
+    var service = scope.ServiceProvider.GetService<IUserService>();
+    if (service != null)
+    {
+        await service.CreateRoleAsync(SystemRoles.User);
+        await service.CreateRoleAsync(SystemRoles.Admin);
+        await service.CreateRoleAsync(SystemRoles.Moderator);
+    }
+}
 //middlewares
 if (!app.Environment.IsDevelopment())
 {
