@@ -8,7 +8,7 @@ namespace Blog.Domain.Entities
         public string? Title { get; set; }
         public string? Content { get; set; }
 
-        public bool IsPublished { get; set; } = false;
+        public bool IsPublished { get; set; } = true;
 
         public string AuthorId { get; set; }
         public User? Author { get; set; }

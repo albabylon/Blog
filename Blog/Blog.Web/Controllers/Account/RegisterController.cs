@@ -24,15 +24,12 @@ namespace Blog.Web.Controllers.Account
         [HttpPost]
         public async Task<IActionResult> Register(CreateUserDTO createUser)
         {
-            try
-            {
-                await _userService.CreateUserAsync(createUser);
+            var result = await _userService.CreateUserAsync(createUser);
+
+            if (result)
                 return Json(createUser);
-            }
-            catch (UserProblemException)
-            {
+            else
                 return Content("Не получилось");
-            };
         }
     }
 }

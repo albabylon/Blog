@@ -70,7 +70,7 @@ namespace Blog.Web.Controllers.Account
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpPost]
+        [HttpPut]
         //[Authorize] //пройдена авторизация и аутентификация
         public async Task<IActionResult> Edit(EditUserDTO dto)
         {

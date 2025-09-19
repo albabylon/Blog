@@ -70,6 +70,17 @@ namespace Blog.Application.Services
             var user = await _userManager.FindByIdAsync(id)
                 ?? throw new UserProblemException($"Не найден пользователь с id {id}");
 
+            user.Email = dto.Email;
+            user.Nickname = dto.Nickname;
+            user.UserName = dto.Nickname;
+            user.Bio = dto.Bio;
+            user.ProfilePictureUrl = dto.ProfilePictureUrl;
+
+            if (!string.IsNullOrEmpty(dto.PasswordNew))
+                await _userManager.ChangePasswordAsync(user, dto.PasswordOld, dto.PasswordNew);
+
+            await _userManager.UpdateAsync(user);
+
             return _mapper.Map<UserDTO>(user);
         }
 
@@ -84,10 +95,18 @@ namespace Blog.Application.Services
             return _mapper.Map<IEnumerable<UserDTO>>(users);
         }
 
-        public async Task<UserDTO> GetUserAsync(string id)
+        public async Task<UserDTO> GetUserByIdAsync(string id)
         {
             var user = await _userManager.FindByIdAsync(id)
                 ?? throw new UserProblemException($"Не найден пользователь с id {id}");
+
+            return _mapper.Map<UserDTO>(user);
+        }
+
+        public async Task<UserDTO> GetUserByEmailAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email)
+                ?? throw new UserProblemException($"Не найден пользователь {email}");
 
             return _mapper.Map<UserDTO>(user);
         }

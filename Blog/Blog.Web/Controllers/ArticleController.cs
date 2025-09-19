@@ -1,28 +1,34 @@
 ﻿using Blog.Application.Contracts.Interfaces;
 using Blog.Application.Exceptions;
+using Blog.Application.Services;
 using Blog.DTOs.Article;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Blog.Web.Controllers
 {
+    [Route("[controller]/[action]")]
     public class ArticleController : Controller
     {
         private readonly IArticleService _articleService;
+        private readonly IUserService _userService;
 
-        public ArticleController(IArticleService articleService)
+        public ArticleController(IArticleService articleService, IUserService userService)
         {
             _articleService = articleService;
+            _userService = userService;
         }
 
-
-        public async Task<IActionResult> Create([FromBody] CreateArticleDTO dto)
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateArticleDTO dto)
         {
-            var userId = User.FindFirst("id").Value;
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             await _articleService.CreateArticleAsync(dto, userId);
-            
-            return Ok();
+
+            return Json(dto);
         }
 
+        [HttpPut]
         public async Task<IActionResult> Edit([FromBody] EditArticleDTO dto, int id)
         {
             if (id != dto.Id)
@@ -44,18 +50,21 @@ namespace Blog.Web.Controllers
             }
         }
 
+        [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
             await _articleService.DeleteArticleAsync(id);
             return Ok();
         }
 
+        [HttpGet]
         public async Task<IActionResult> AllArticle()
         {
             await _articleService.GetAllArticlesAsync();
             return Ok();
         }
 
+        [HttpGet]
         public async Task<IActionResult> AllArticle(string guid)
         {
             await _articleService.GetAllArticlesByAuthorAsync(guid);

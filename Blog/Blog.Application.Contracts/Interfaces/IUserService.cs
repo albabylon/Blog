@@ -10,7 +10,8 @@ namespace Blog.Application.Contracts.Interfaces
         Task LogoutUserAsync();
         Task<UserDTO> EditUserAsync(EditUserDTO dto, string id);
         Task<bool> DeleteUserAsync(string id);
-        Task<UserDTO> GetUserAsync(string id);
+        Task<UserDTO> GetUserByIdAsync(string id);
+        Task<UserDTO> GetUserByEmailAsync(string email);
         Task<IEnumerable<UserDTO>> GetAllUsersAsync(string? roleName = null);
     }
 }

@@ -25,12 +25,10 @@ namespace Blog.Web.Controllers.Account
             //return View();
         }
 
-        [HttpPost]
-        //[Route("{id}")]
-        [Route("[controller]/[action]")]
+        [HttpDelete]
+        [Route("[controller]/[action]/{id}")]
         public async Task<IActionResult> Delete(string id)
         {
-            //await _userService.GetUserAsync();
             await _userService.DeleteUserAsync(id);
             return Content($"Удален пользователь: {id}");
         }
