@@ -8,9 +8,9 @@ namespace Blog.Application.Contracts.Interfaces
         Task<bool> CreateUserAsync(CreateUserDTO dto);
         Task<bool> LoginUserAsync(LoginUserDTO dto);
         Task LogoutUserAsync();
-        Task EditUserAsync(EditUserDTO dto);
+        Task<UserDTO> EditUserAsync(EditUserDTO dto, string id);
         Task<bool> DeleteUserAsync(string id);
         Task<UserDTO> GetUserAsync(string id);
-        Task<IEnumerable<UserDTO>> GetAllUsersAsync();
+        Task<IEnumerable<UserDTO>> GetAllUsersAsync(string? roleName = null);
     }
 }

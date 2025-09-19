@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Web.Controllers.Account
 {
+    [Route("[action]")]
     public class RegisterController : Controller
     {
         private readonly IUserService _userService;
@@ -14,13 +15,13 @@ namespace Blog.Web.Controllers.Account
             _userService = userService;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
-        [Route("[action]")]
         public async Task<IActionResult> Register(CreateUserDTO createUser)
         {
             try
@@ -30,7 +31,7 @@ namespace Blog.Web.Controllers.Account
             }
             catch (UserProblemException)
             {
-                return Ok("Не получилось");
+                return Content("Не получилось");
             };
         }
     }

@@ -4,7 +4,7 @@ using Blog.Application.Exceptions;
 using Blog.Domain.Identity;
 using Blog.DTOs.User;
 using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Application.Services
 {
@@ -23,10 +23,11 @@ namespace Blog.Application.Services
             _mapper = mapper;
         }
 
+
         public async Task<bool> CreateRoleAsync(string roleName)
         {
             var isRoleExist = await _roleManager.RoleExistsAsync(roleName);
-            if(!isRoleExist)
+            if (!isRoleExist)
             {
                 var result = await _roleManager.CreateAsync(new Role(roleName));
                 return result.Succeeded;
@@ -46,7 +47,7 @@ namespace Blog.Application.Services
             {
                 dto.Role ??= SystemRoles.User;
                 var roleResult = await _userManager.AddToRoleAsync(user, dto.Role);
-                
+
                 return roleResult.Succeeded;
             }
             else
@@ -64,26 +65,46 @@ namespace Blog.Application.Services
             return result.Succeeded;
         }
 
-        public Task EditUserAsync(EditUserDTO dto)
+        public async Task<UserDTO> EditUserAsync(EditUserDTO dto, string id)
         {
-            throw new NotImplementedException();
+            var user = await _userManager.FindByIdAsync(id)
+                ?? throw new UserProblemException($"Не найден пользователь с id {id}");
+
+            return _mapper.Map<UserDTO>(user);
         }
 
-        public Task<IEnumerable<UserDTO>> GetAllUsersAsync()
+        public async Task<IEnumerable<UserDTO>> GetAllUsersAsync(string? roleName = null)
         {
-            throw new NotImplementedException();
+            List<User>? users;
+            if (roleName is null)
+                users = await _userManager.Users.ToListAsync();
+            else
+                users = await _userManager.GetUsersInRoleAsync(roleName) as List<User>;
+
+            return _mapper.Map<IEnumerable<UserDTO>>(users);
         }
 
-        public Task<UserDTO> GetUserAsync(string id)
+        public async Task<UserDTO> GetUserAsync(string id)
         {
-            throw new NotImplementedException();
+            var user = await _userManager.FindByIdAsync(id)
+                ?? throw new UserProblemException($"Не найден пользователь с id {id}");
+
+            return _mapper.Map<UserDTO>(user);
         }
 
         public async Task<bool> LoginUserAsync(LoginUserDTO dto)
         {
-            var user = _mapper.Map<User>(dto);
-            var result = await _signInManager.PasswordSignInAsync(user, dto.Password, dto.RememberMe, false);
+            User? user = null;
+            if (dto.Email is not null)
+                user = await _userManager.FindByEmailAsync(dto.Email);
+            else if (dto.UserName is not null)
+                user = await _userManager.FindByNameAsync(dto.UserName);
+
+            if(user is null)
+                throw new NotFoundException($"Не найден пользватель с {dto.Email}");
             
+            var result = await _signInManager.PasswordSignInAsync(user, dto.Password, dto.RememberMe, false);
+
             return result.Succeeded;
         }
 

@@ -18,6 +18,8 @@ namespace Blog.Application.Common.Mapping
             CreateMap<EditUserDTO, User>()
                 .ForMember(d => d.Email, o => o.MapFrom(s => s.Email))
                 .ForMember(d => d.UserName, o => o.MapFrom(s => s.Nickname));
+            CreateMap<UserDTO, User>();
+            CreateMap<User, UserDTO>();
 
             //article
             CreateMap<Article, ArticleDTO>()

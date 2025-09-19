@@ -8,6 +8,8 @@ using Blog.Infrastructure.Data;
 using Blog.Infrastructure.Extensions;
 using Blog.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using FluentValidation.AspNetCore;
+using Blog.Application.Validation.Login;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +24,9 @@ builder.Services
 var mapperConfig = new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfile()));
 var mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
+
+//validation
+//builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginUserDtoValidation>());
 
 //db connection
 var connection = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -60,6 +65,7 @@ using (var scope = app.Services.CreateScope())
         await service.CreateRoleAsync(SystemRoles.Moderator);
     }
 }
+
 //middlewares
 if (!app.Environment.IsDevelopment())
 {
