@@ -59,17 +59,20 @@ namespace Blog.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AllArticle()
+        public async Task<IActionResult> All(string? tagName)
         {
-            await _articleService.GetAllArticlesAsync();
+            if (tagName is null)
+                await _articleService.GetAllArticlesAsync();
+            else
+                await _articleService.GetAllArticlesByTagAsync(tagName);
             return Ok();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> AllArticle(string guid)
-        {
-            await _articleService.GetAllArticlesByAuthorAsync(guid);
-            return Ok();
-        }
+        //[HttpGet]
+        //public async Task<IActionResult> AllArticle(string guid)
+        //{
+        //    await _articleService.GetAllArticlesByAuthorAsync(guid);
+        //    return Ok();
+        //}
     }
 }

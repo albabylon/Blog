@@ -2,9 +2,11 @@
 using Blog.Application.Contracts.Interfaces;
 using Blog.Application.Exceptions;
 using Blog.Domain.Entities;
+using Blog.Domain.Identity;
 using Blog.DTOs.Article;
 using Blog.Infrastructure.Contracts.Interfaces;
 using Blog.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Identity;
 
 namespace Blog.Application.Services
 {
@@ -12,13 +14,16 @@ namespace Blog.Application.Services
     {
         private readonly ArticlesRepository _articleRepos;
         private readonly TagsRepository _tagRepos;
+        private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
 
-        public ArticleService(IUnitOfWork unitOfWork, IMapper mapper)
+        public ArticleService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<User> userManager)
         {
             _articleRepos = unitOfWork.GetRepository<Article>() as ArticlesRepository 
                 ?? throw new Exception();
             _tagRepos = unitOfWork.GetRepository<Tag>() as TagsRepository
+                ?? throw new Exception();
+            _userManager = userManager
                 ?? throw new Exception();
             _mapper = mapper;
         }
@@ -36,6 +41,12 @@ namespace Blog.Application.Services
             return _mapper.Map<IEnumerable<ArticleDTO>>(result);
         }
 
+        public async Task<IEnumerable<ArticleDTO>> GetAllArticlesByTagAsync(string tagName)
+        {
+            var result = await _articleRepos.GetAllByTag(tagName);
+            return _mapper.Map<IEnumerable<ArticleDTO>>(result);
+        }
+
         public async Task<IEnumerable<ArticleDTO>> GetAllArticlesByAuthorAsync(string authorId)
         {
             var result = await _articleRepos.GetAllByAuthorId(authorId);
@@ -45,6 +56,9 @@ namespace Blog.Application.Services
         public async Task CreateArticleAsync(CreateArticleDTO dto, string authorId)
         {
             var article = _mapper.Map<Article>(dto);
+            var user = await _userManager.FindByIdAsync(authorId);
+            article.Author = user;
+            article.AuthorId = authorId;
 
             if (dto.TagNames != null)
             {
