@@ -46,6 +46,16 @@ namespace Blog.Application.Services
         {
             var article = _mapper.Map<Article>(dto);
 
+            if (dto.TagNames != null)
+            {
+                article.ArticleTags = new List<ArticleTag>();
+                foreach (var tagName in dto.TagNames)
+                {
+                    var tag = await _tagRepos.GetOrCreate(tagName);
+                    article.ArticleTags.Add(new ArticleTag { Tag = tag });
+                }
+            }
+
             await _articleRepos.Create(article);
         }
 
