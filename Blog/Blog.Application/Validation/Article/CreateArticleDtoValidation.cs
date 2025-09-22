@@ -17,11 +17,5 @@ namespace Blog.Application.Validation.Article
                 .NotEmpty()
                 .WithMessage("Содержание обязательно");
         }
-
-        //private bool BeSupported(string location)
-        //{
-        //    // Проверим, содержится ли значение в списке допустимых
-        //    return Values.ValidRooms.Any(e => e == location);
-        //}
     }
 }

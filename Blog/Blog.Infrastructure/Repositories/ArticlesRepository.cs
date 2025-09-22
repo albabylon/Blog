@@ -26,7 +26,7 @@ namespace Blog.Infrastructure.Repositories
                 .ThenInclude(x => x.Tag)
                 .Where(x => x.ArticleTags.Any(y => y.Tag.Name == tagName))
                 .OrderByDescending(a => a.CreatedAt)
-                .ToListAsync() ?? throw new Exception($"статьи по тегу {tagName} не найден");
+                .ToListAsync() ?? throw new Exception($"статьи по тегу {tagName} не найдены");
         }
     }
 }

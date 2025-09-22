@@ -65,7 +65,7 @@ namespace Blog.Application.Services
                 article.ArticleTags = new List<ArticleTag>();
                 foreach (var tagName in dto.TagNames)
                 {
-                    var tag = await _tagRepos.GetOrCreate(tagName);
+                    var tag = await _tagRepos.GetByName(tagName);
                     article.ArticleTags.Add(new ArticleTag { Tag = tag });
                 }
             }
@@ -85,6 +85,20 @@ namespace Blog.Application.Services
             article.Content = dto.Content;
             article.UpdatedAt = DateTime.UtcNow;
             article.IsPublished = dto.IsPublished;
+
+            if (dto.TagNames != null)
+            {
+                var allTagsOfArticle = await _tagRepos.GetAllByArticleId(dto.Id);
+
+                foreach (var tagName in dto.TagNames)
+                {
+                    if (allTagsOfArticle.Any(x => x.Name == tagName))
+                        continue;
+
+                    var tag = await _tagRepos.GetByName(tagName);
+                    article.ArticleTags.Add(new ArticleTag { Tag = tag });
+                }
+            }
 
             await _articleRepos.Update(article);
         }

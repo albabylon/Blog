@@ -37,7 +37,7 @@ namespace Blog.Web.Controllers
 
             try
             {
-                var userId = User.FindFirst("id").Value;
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 await _articleService.EditArticleAsync(dto, userId);
                 return Ok(new { Message = "Статья успешно обновлена" });
             }

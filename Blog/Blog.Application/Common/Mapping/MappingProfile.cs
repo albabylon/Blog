@@ -2,6 +2,7 @@
 using Blog.Domain.Entities;
 using Blog.Domain.Identity;
 using Blog.DTOs.Article;
+using Blog.DTOs.Tag;
 using Blog.DTOs.User;
 
 namespace Blog.Application.Common.Mapping
@@ -26,6 +27,12 @@ namespace Blog.Application.Common.Mapping
                 .ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => src.Author.UserName));
             CreateMap<CreateArticleDTO, Article>();
             CreateMap<EditArticleDTO, Article>();
+
+            //tags
+            CreateMap<TagDTO, Tag>();
+            CreateMap<Tag, TagDTO>();
+            CreateMap<CreateTagDTO, Tag>();
+            CreateMap<Tag, CreateTagDTO>();
         }
     }
 }
