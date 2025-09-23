@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Blog.Application.Contracts.Interfaces;
+using Blog.Application.Exceptions;
 using Blog.Domain.Entities;
-using Blog.DTOs.Article;
 using Blog.DTOs.Tag;
 using Blog.Infrastructure.Contracts.Interfaces;
 using Blog.Infrastructure.Repositories;
@@ -13,13 +13,20 @@ namespace Blog.Application.Services
         private readonly TagsRepository _tagRepos;
         private readonly IMapper _mapper;
 
+
         public TagService(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _tagRepos = unitOfWork.GetRepository<Tag>() as TagsRepository 
+            _tagRepos = unitOfWork.GetRepository<Tag>() as TagsRepository
                 ?? throw new Exception();
             _mapper = mapper;
         }
 
+
+        public async Task<TagDTO> GetTagAsync(int tagId)
+        {
+            var result = await _tagRepos.Get(tagId);
+            return _mapper.Map<TagDTO>(result);
+        }
 
         public async Task<IEnumerable<TagDTO>> GetAllTagsAsync()
         {
@@ -33,10 +40,28 @@ namespace Blog.Application.Services
             return _mapper.Map<IEnumerable<TagDTO>>(result);
         }
 
-        public async Task CreateArticleAsync(CreateTagDTO dto)
+        public async Task CreateTagAsync(CreateTagDTO dto)
         {
             var tag = _mapper.Map<Tag>(dto);
             await _tagRepos.Create(tag);
+        }
+
+        public async Task EditTagAsync(EditTagDTO dto)
+        {
+            var tag = await _tagRepos.Get(dto.Id)
+                ?? throw new NotFoundException($"Тег {dto.Id} не найдена");
+
+            tag.Name = dto.Name;
+            tag.Description = dto.Description;
+            tag.UpdatedAt = DateTime.UtcNow;
+
+            await _tagRepos.Update(tag);
+        }
+
+        public async Task DeleteTagAsync(int tagId)
+        {
+            var tag = await _tagRepos.Get(tagId);
+            await _tagRepos.Delete(tag);
         }
     }
 }

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace Blog.Web.Controllers.Account
 {
     //[Authorize(Roles = SystemRoles.Admin)]
+    [Route("[controller]")]
     public class AdminController : Controller
     {
         private readonly IUserService _userService;
@@ -17,7 +18,7 @@ namespace Blog.Web.Controllers.Account
             _userService = userService;
         }
 
-        [Route("[controller]")]
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var allUsers = await _userService.GetAllUsersAsync();
@@ -26,7 +27,7 @@ namespace Blog.Web.Controllers.Account
         }
 
         [HttpDelete]
-        [Route("[controller]/[action]/{id}")]
+        [Route("[action]/{id}")]
         public async Task<IActionResult> Delete(string id)
         {
             await _userService.DeleteUserAsync(id);

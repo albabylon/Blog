@@ -2,14 +2,15 @@ using AutoMapper;
 using Blog.Application.Common.Mapping;
 using Blog.Application.Contracts.Interfaces;
 using Blog.Application.Services;
+using Blog.Application.Validation.Login;
+using Blog.Application.Validation.Tag;
 using Blog.Domain.Entities;
 using Blog.Domain.Identity;
 using Blog.Infrastructure.Data;
 using Blog.Infrastructure.Extensions;
 using Blog.Infrastructure.Repositories;
-using Microsoft.EntityFrameworkCore;
 using FluentValidation.AspNetCore;
-using Blog.Application.Validation.Login;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,7 @@ builder.Services.AddSingleton(mapper);
 
 //validation
 //builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginUserDtoValidation>());
+//builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateTagDtoValidation>());
 
 //db connection
 var connection = builder.Configuration.GetConnectionString("DefaultConnection");

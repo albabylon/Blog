@@ -33,6 +33,8 @@ namespace Blog.Application.Common.Mapping
             CreateMap<Tag, TagDTO>();
             CreateMap<CreateTagDTO, Tag>();
             CreateMap<Tag, CreateTagDTO>();
+            CreateMap<EditTagDTO, Tag>();
+            CreateMap<Tag, EditTagDTO>();
         }
     }
 }

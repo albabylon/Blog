@@ -1,13 +1,12 @@
 ﻿using Blog.Application.Contracts.Interfaces;
 using Blog.Application.Exceptions;
-using Blog.Application.Services;
 using Blog.DTOs.Article;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace Blog.Web.Controllers
 {
-    [Route("[controller]/[action]")]
+    [Route("[controller]")]
     public class ArticleController : Controller
     {
         private readonly IArticleService _articleService;
@@ -20,7 +19,45 @@ namespace Blog.Web.Controllers
         }
 
 
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            var result = await _articleService.GetArticleAsync(id);
+            return Json(result);
+        }
+
+        [HttpGet]
+        [Route("all/{authorId}")]
+        public async Task<IActionResult> AllByAuthor(string authorId)
+        {
+            var result = await _articleService.GetAllArticlesByAuthorAsync(authorId);
+            return Json(result);
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> All([FromQuery(Name = "name")] string? tagName)
+        {
+            if (tagName is null)
+            {
+                var result = await _articleService.GetAllArticlesAsync();
+                return Json(result);
+            }
+            else
+            {
+                var result = await _articleService.GetAllArticlesByTagAsync(tagName);
+                return Json(result);
+            }
+        }
+
         [HttpPost]
+        [Route("[action]")]
         public async Task<IActionResult> Create(CreateArticleDTO dto)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -30,7 +67,8 @@ namespace Blog.Web.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Edit([FromBody] EditArticleDTO dto, int id)
+        [Route("[action]/{id}")]
+        public async Task<IActionResult> Edit(EditArticleDTO dto, int id)
         {
             if (id != dto.Id)
                 return BadRequest("Несоответствие ID статьи");
@@ -45,34 +83,18 @@ namespace Blog.Web.Controllers
             {
                 return NotFound(new { Error = ex.Message });
             }
-            catch(UnauthorizedAccessException ex)
+            catch (UnauthorizedAccessException ex)
             {
                 return Forbid(ex.Message);
             }
         }
 
         [HttpDelete]
+        [Route("[action]/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             await _articleService.DeleteArticleAsync(id);
             return Ok();
         }
-
-        [HttpGet]
-        public async Task<IActionResult> All(string? tagName)
-        {
-            if (tagName is null)
-                await _articleService.GetAllArticlesAsync();
-            else
-                await _articleService.GetAllArticlesByTagAsync(tagName);
-            return Ok();
-        }
-
-        //[HttpGet]
-        //public async Task<IActionResult> AllArticle(string guid)
-        //{
-        //    await _articleService.GetAllArticlesByAuthorAsync(guid);
-        //    return Ok();
-        //}
     }
 }
