@@ -2,6 +2,7 @@
 using Blog.Domain.Entities;
 using Blog.Domain.Identity;
 using Blog.DTOs.Article;
+using Blog.DTOs.Comment;
 using Blog.DTOs.Tag;
 using Blog.DTOs.User;
 
@@ -35,6 +36,14 @@ namespace Blog.Application.Common.Mapping
             CreateMap<Tag, CreateTagDTO>();
             CreateMap<EditTagDTO, Tag>();
             CreateMap<Tag, EditTagDTO>();
+
+            //comments
+            CreateMap<CommentDTO, Comment>();
+            CreateMap<Comment, CommentDTO>();
+            CreateMap<CreateCommentDTO, Tag>();
+            CreateMap<Tag, CreateCommentDTO>();
+            CreateMap<EditCommentDTO, Comment>();
+            CreateMap<Comment, EditCommentDTO>();
         }
     }
 }

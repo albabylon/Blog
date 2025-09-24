@@ -55,8 +55,11 @@ namespace Blog.Application.Services
 
         public async Task CreateArticleAsync(CreateArticleDTO dto, string authorId)
         {
+            var user = await _userManager.FindByIdAsync(authorId) 
+                ?? throw new UserProblemException($"Не найден пользователь {authorId}");
+
             var article = _mapper.Map<Article>(dto);
-            var user = await _userManager.FindByIdAsync(authorId);
+
             article.Author = user;
             article.AuthorId = authorId;
 

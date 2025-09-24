@@ -1,6 +1,7 @@
 ﻿using Blog.Domain.Entities;
 using Blog.Infrastructure.Data;
 using Blog.Infrastructure.Repositories.Base;
+using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Infrastructure.Repositories
 {
@@ -9,6 +10,21 @@ namespace Blog.Infrastructure.Repositories
         public CommentsRepository(BlogDbContext appContext) : base(appContext)
         {
 
+        }
+
+        public override async Task<Comment> Get(int id)
+        {
+            return await Set.Include(c => c.Article)
+                            .Include(c => c.User)
+                            .FirstOrDefaultAsync(x => x.Id == id) 
+                            ?? throw new Exception($"{id} не найден");
+        }
+
+        public override async Task<IEnumerable<Comment>> GetAll()
+        {
+            return await Set.Include(c => c.Article)
+                            .Include(c => c.User)
+                            .ToListAsync();
         }
     }
 }

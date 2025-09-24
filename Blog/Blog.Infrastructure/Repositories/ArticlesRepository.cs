@@ -20,13 +20,13 @@ namespace Blog.Infrastructure.Repositories
 
         public async Task<IEnumerable<Article>> GetAllByTag(string tagName)
         {
-            return await Set
-                .Include(x => x.Author)
-                .Include(x => x.ArticleTags)
-                .ThenInclude(x => x.Tag)
-                .Where(x => x.ArticleTags.Any(y => y.Tag.Name == tagName))
-                .OrderByDescending(a => a.CreatedAt)
-                .ToListAsync() ?? throw new Exception($"статьи по тегу {tagName} не найдены");
+            return await Set.Include(x => x.Author)
+                            .Include(x => x.ArticleTags)
+                            .ThenInclude(x => x.Tag)
+                            .Where(x => x.ArticleTags.Any(y => y.Tag.Name == tagName))
+                            .OrderByDescending(a => a.CreatedAt)
+                            .ToListAsync() 
+                            ?? throw new Exception($"статьи по тегу {tagName} не найдены");
         }
     }
 }
