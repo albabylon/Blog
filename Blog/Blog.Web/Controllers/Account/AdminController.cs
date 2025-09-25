@@ -1,9 +1,7 @@
 ﻿using Blog.Application.Contracts.Interfaces;
 using Blog.Domain.Identity;
-using Blog.DTOs.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace Blog.Web.Controllers.Account
 {
@@ -23,15 +21,34 @@ namespace Blog.Web.Controllers.Account
         {
             var allUsers = await _userService.GetAllUsersAsync();
             return Json(allUsers);
-            //return View();
+        }
+
+        [HttpGet("{userId}")]
+        public async Task<IActionResult> GetUser(string userId)
+        {
+            var allUsers = await _userService.GetUserByIdAsync(userId);
+            return Json(allUsers);
         }
 
         [HttpDelete]
-        [Route("[action]/{id}")]
+        [Route("[action]")]
         public async Task<IActionResult> Delete(string id)
         {
-            await _userService.DeleteUserAsync(id);
-            return Content($"Удален пользователь: {id}");
+            var result = await _userService.DeleteUserAsync(id);
+            if (result)
+                return Content($"Удален пользователь: {id}");
+            return Content($"Удалить пользователя {id} не получилось");
+        }
+
+        [HttpPut]
+        [Route("[action]")]
+        public async Task<IActionResult> UpdateRole(string userId, string role)
+        {
+            var result = await _userService.UpdateUserRoleAsync(userId, role);
+
+            if (result)
+                return Content($"Обновлена роль у {userId} до {role}");
+            return Content($"Обновить роль у {userId} до {role} не получилось");
         }
     }
 }

@@ -44,10 +44,10 @@ namespace Blog.Web.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null)
-                return BadRequest("Пользовательн не найден");
+                return BadRequest("Пользователь не найден");
 
             await _commentService.CreateCommentAsync(dto, articleId, userId);
-            return Ok();
+            return Json(dto);
         }
 
         [HttpPut]
@@ -60,7 +60,7 @@ namespace Blog.Web.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             await _commentService.EditCommentAsync(dto, userId);
-            return Ok();
+            return Json(dto);
         }
 
         [HttpDelete]

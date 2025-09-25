@@ -5,6 +5,8 @@ using Blog.Domain.Identity;
 using Blog.DTOs.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
+using System.Security.Claims;
 
 namespace Blog.Application.Services
 {
@@ -56,6 +58,14 @@ namespace Blog.Application.Services
             }
         }
 
+        public async Task<bool> UpdateUserRoleAsync(string userId, string role)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            var result = await _userManager.AddToRoleAsync(user, role);
+
+            return result.Succeeded;
+        }
+
         public async Task<bool> DeleteUserAsync(string id)
         {
             var user = await _userManager.FindByIdAsync(id) ??
@@ -75,13 +85,16 @@ namespace Blog.Application.Services
             user.UserName = dto.Nickname;
             user.Bio = dto.Bio;
             user.ProfilePictureUrl = dto.ProfilePictureUrl;
-
+            
             if (!string.IsNullOrEmpty(dto.PasswordNew))
                 await _userManager.ChangePasswordAsync(user, dto.PasswordOld, dto.PasswordNew);
 
             await _userManager.UpdateAsync(user);
 
-            return _mapper.Map<UserDTO>(user);
+            var result = _mapper.Map<UserDTO>(user);
+            result.Role = await _userManager.GetRolesAsync(user);
+
+            return result;
         }
 
         public async Task<IEnumerable<UserDTO>> GetAllUsersAsync(string? roleName = null)
@@ -92,15 +105,29 @@ namespace Blog.Application.Services
             else
                 users = await _userManager.GetUsersInRoleAsync(roleName) as List<User>;
 
-            return _mapper.Map<IEnumerable<UserDTO>>(users);
+            var result = _mapper.Map<IEnumerable<UserDTO>>(users);
+
+            foreach (var userDto in result)
+            {
+                var user = users.FirstOrDefault(u => u.Id == userDto.Id);
+                if (user != null)
+                {
+                    userDto.Role = await _userManager.GetRolesAsync(user);
+                }
+            }
+
+            return result;
         }
 
         public async Task<UserDTO> GetUserByIdAsync(string id)
         {
             var user = await _userManager.FindByIdAsync(id)
                 ?? throw new UserProblemException($"Не найден пользователь с id {id}");
+            
+            var result = _mapper.Map<UserDTO>(user);
+            result.Role = await _userManager.GetRolesAsync(user);
 
-            return _mapper.Map<UserDTO>(user);
+            return result;
         }
 
         public async Task<UserDTO> GetUserByEmailAsync(string email)
@@ -108,7 +135,10 @@ namespace Blog.Application.Services
             var user = await _userManager.FindByEmailAsync(email)
                 ?? throw new UserProblemException($"Не найден пользователь {email}");
 
-            return _mapper.Map<UserDTO>(user);
+            var result = _mapper.Map<UserDTO>(user);
+            result.Role = await _userManager.GetRolesAsync(user);
+
+            return result;
         }
 
         public async Task<bool> LoginUserAsync(LoginUserDTO dto)
@@ -130,6 +160,17 @@ namespace Blog.Application.Services
         public async Task LogoutUserAsync()
         {
             await _signInManager.SignOutAsync();
+        }
+
+        public async Task AddCustomClaimsAsync(string id, IEnumerable<Claim> claims)
+        {
+            var user = await _userManager.FindByIdAsync(id) ??
+                throw new NotFoundException($"Не найден пользватель {id}");
+
+            await _userManager.AddClaimsAsync(user, claims);
+
+            // Обновляем claims в cookie, если пользователь сейчас авторизован
+            await _signInManager.RefreshSignInAsync(user);
         }
     }
 }

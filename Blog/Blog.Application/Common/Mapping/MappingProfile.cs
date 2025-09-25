@@ -39,9 +39,11 @@ namespace Blog.Application.Common.Mapping
 
             //comments
             CreateMap<CommentDTO, Comment>();
-            CreateMap<Comment, CommentDTO>();
-            CreateMap<CreateCommentDTO, Tag>();
-            CreateMap<Tag, CreateCommentDTO>();
+            CreateMap<Comment, CommentDTO>()
+                .ForMember(d => d.AuthorName, s => s.MapFrom(x => x.User.UserName))
+                .ForMember(d => d.ArticleName, s => s.MapFrom(x => x.Article.Title));
+            CreateMap<CreateCommentDTO, Comment>();
+            CreateMap<Comment, CreateCommentDTO>();
             CreateMap<EditCommentDTO, Comment>();
             CreateMap<Comment, EditCommentDTO>();
         }
