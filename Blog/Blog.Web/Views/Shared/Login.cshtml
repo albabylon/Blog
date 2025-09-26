@@ -5,20 +5,34 @@
 }
 
 <div class="block-reg background-white">
-    <form class="frm" method="post" asp-controller="ProfileController" asp-action="Login">
-        <div asp-validation-summary="ModelOnly"></div>
-        <div>
-            <div class="mrgn">
-                <input asp-for="Email" class="form-control" />
-            </div>
+    <h4>Вход в систему</h4>
+    <form class="frm" method="post" asp-controller="Account" asp-action="Login">
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <input type="hidden" asp-for="ReturnUrl" />
+
+        <div class="form-group mrgn">
+            <label asp-for="Email"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
         </div>
-        <div>
-            <div class="mrgn">
-                <input asp-for="Password" class="form-control" />
-            </div>
+
+        <div class="form-group mrgn">
+            <label asp-for="Password"></label>
+            <input asp-for="Password" class="form-control" />
+            <span asp-validation-for="Password" class="text-danger"></span>
         </div>
-        <div>
+
+        <div class="form-group">
             <input class="enter_submit" type="submit" value="Войти" />
         </div>
     </form>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

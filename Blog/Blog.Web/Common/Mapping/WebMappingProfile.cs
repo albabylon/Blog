@@ -8,8 +8,7 @@ namespace Blog.Web.Common.Mapping
     {
         public WebMappingProfile()
         {
-            CreateMap<CreateUserDTO, LoginViewModel>()
-                .ForMember(d => d.UserName, o => o.MapFrom(s => s.Nickname));
+            CreateMap<LoginViewModel, LoginUserDTO>();
         }
     }
 }

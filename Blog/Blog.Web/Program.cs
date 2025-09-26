@@ -9,6 +9,7 @@ using Blog.Domain.Identity;
 using Blog.Infrastructure.Data;
 using Blog.Infrastructure.Extensions;
 using Blog.Infrastructure.Repositories;
+using Blog.Web.Common.Mapping;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,7 +23,11 @@ builder.Services
     .AddScoped<IUserService, UserService>();
 
 //mapping
-var mapperConfig = new MapperConfiguration(cfg => cfg.AddProfile(new AppMappingProfile()));
+var mapperConfig = new MapperConfiguration(cfg => 
+{
+    cfg.AddProfile(new AppMappingProfile());
+    cfg.AddProfile(new WebMappingProfile());
+});
 var mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 
@@ -51,7 +56,6 @@ builder.Services
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
-
 
 //---build to app---
 var app = builder.Build();

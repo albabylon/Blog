@@ -19,6 +19,7 @@ namespace Blog.Web.Controllers.Account
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            
             var allUsers = await _userService.GetAllUsersAsync();
             return Json(allUsers);
         }
