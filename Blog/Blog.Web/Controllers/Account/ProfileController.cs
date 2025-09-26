@@ -1,8 +1,11 @@
-﻿using Blog.Application.Contracts.Interfaces;
+﻿using AutoMapper;
+using Blog.Application.Contracts.Interfaces;
 using Blog.Application.Exceptions;
 using Blog.DTOs.User;
+using Blog.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 
 namespace Blog.Web.Controllers.Account
@@ -11,39 +14,41 @@ namespace Blog.Web.Controllers.Account
     public class ProfileController : Controller
     {
         private readonly IUserService _userService;
+        private readonly IMapper _mapper;
 
-        public ProfileController(IUserService userService)
+        public ProfileController(IUserService userService, IMapper mapper)
         {
             _userService = userService;
+            _mapper = mapper;
         }
+
 
         [HttpGet]
         public IActionResult Login(string? returnUrl = null)
         {
-            return View();
+            return View(new LoginViewModel { ReturnUrl = returnUrl });
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken] //от CSRF-атак
-        public async Task<IActionResult> Login(LoginUserDTO dto, string? returnUrl) //returnUrl запихать во viewmodel
+        [ValidateAntiForgeryToken] //от CSRF-атак
+        public async Task<IActionResult> Login(LoginViewModel viewModel)
         {
-            //if (ModelState.IsValid)
-            //{
+            if (ModelState.IsValid)
+            {
                 try
                 {
+                    var dto = _mapper.Map<LoginUserDTO>(viewModel);
                     var result = await _userService.LoginUserAsync(dto);
 
                     if (result)
                     {
-                        if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                        if (!string.IsNullOrEmpty(viewModel.ReturnUrl) && Url.IsLocalUrl(viewModel.ReturnUrl))
                         {
-                            return Content($"{returnUrl}");
-                            //return Redirect(returnUrl);
+                            return Redirect(viewModel.ReturnUrl);
                         }
                         else
                         {
-                            return Content($"url пустая");
-                            //return RedirectToAction("MyPage", "AccountManager");
+                            return RedirectToAction("MyPage", "AccountManager");
                         }
                     }
                     else
@@ -57,13 +62,12 @@ namespace Blog.Web.Controllers.Account
                     ModelState.AddModelError("", ex.Message);
                     return Content($"{ex.Message}");
                 }
-            //}
-            //return Json(dto);
-            //return View("Views/Home/Index.cshtml", new MainViewModel());
+            }
+            return View("Views/Home/Index.cshtml", viewModel);
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             await _userService.LogoutUserAsync();
@@ -71,7 +75,7 @@ namespace Blog.Web.Controllers.Account
         }
 
         [HttpPut]
-        //[Authorize] //пройдена авторизация и аутентификация
+        [Authorize] //пройдена авторизация и аутентификация
         public async Task<IActionResult> Edit(EditUserDTO dto)
         {
             try

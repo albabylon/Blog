@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Web.Controllers.Account
 {
-    //[Authorize(Roles = SystemRoles.Admin)]
+    [Authorize(Roles = SystemRoles.Admin)]
     [Route("[controller]")]
     public class AdminController : Controller
     {

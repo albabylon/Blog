@@ -15,6 +15,8 @@ namespace Blog.Application.Contracts.Interfaces
         Task<UserDTO> GetUserByIdAsync(string id);
         Task<UserDTO> GetUserByEmailAsync(string email);
         Task<IEnumerable<UserDTO>> GetAllUsersAsync(string? roleName = null);
-        Task AddCustomClaimsAsync(string id, IEnumerable<Claim> claims);       
+        Task AddCustomClaimsAsync(string id, IEnumerable<Claim> claims);
+
+        bool IsLogged(ClaimsPrincipal claims);
     }
 }

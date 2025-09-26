@@ -5,7 +5,6 @@ using Blog.Domain.Identity;
 using Blog.DTOs.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Data;
 using System.Security.Claims;
 
 namespace Blog.Application.Services
@@ -85,7 +84,7 @@ namespace Blog.Application.Services
             user.UserName = dto.Nickname;
             user.Bio = dto.Bio;
             user.ProfilePictureUrl = dto.ProfilePictureUrl;
-            
+
             if (!string.IsNullOrEmpty(dto.PasswordNew))
                 await _userManager.ChangePasswordAsync(user, dto.PasswordOld, dto.PasswordNew);
 
@@ -123,7 +122,7 @@ namespace Blog.Application.Services
         {
             var user = await _userManager.FindByIdAsync(id)
                 ?? throw new UserProblemException($"Не найден пользователь с id {id}");
-            
+
             var result = _mapper.Map<UserDTO>(user);
             result.Role = await _userManager.GetRolesAsync(user);
 
@@ -149,9 +148,9 @@ namespace Blog.Application.Services
             else if (dto.UserName is not null)
                 user = await _userManager.FindByNameAsync(dto.UserName);
 
-            if(user is null)
+            if (user is null)
                 throw new NotFoundException($"Не найден пользватель с {dto.Email}");
-            
+
             var result = await _signInManager.PasswordSignInAsync(user, dto.Password, dto.RememberMe, false);
 
             return result.Succeeded;
@@ -171,6 +170,12 @@ namespace Blog.Application.Services
 
             // Обновляем claims в cookie, если пользователь сейчас авторизован
             await _signInManager.RefreshSignInAsync(user);
+        }
+
+
+        public bool IsLogged(ClaimsPrincipal claims)
+        {
+            return _signInManager.IsSignedIn(claims);
         }
     }
 }

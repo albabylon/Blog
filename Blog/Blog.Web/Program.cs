@@ -22,7 +22,7 @@ builder.Services
     .AddScoped<IUserService, UserService>();
 
 //mapping
-var mapperConfig = new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfile()));
+var mapperConfig = new MapperConfiguration(cfg => cfg.AddProfile(new AppMappingProfile()));
 var mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 

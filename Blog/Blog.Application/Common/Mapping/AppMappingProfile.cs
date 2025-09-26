@@ -8,9 +8,9 @@ using Blog.DTOs.User;
 
 namespace Blog.Application.Common.Mapping
 {
-    public class MappingProfile : Profile
+    public class AppMappingProfile : Profile
     {
-        public MappingProfile()
+        public AppMappingProfile()
         {
             //user
             CreateMap<CreateUserDTO, User>()

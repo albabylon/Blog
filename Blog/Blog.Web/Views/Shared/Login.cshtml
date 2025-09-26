@@ -1,0 +1,24 @@
+﻿@model Blog.Web.ViewModels.LoginViewModel;
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="block-reg background-white">
+    <form class="frm" method="post" asp-controller="ProfileController" asp-action="Login">
+        <div asp-validation-summary="ModelOnly"></div>
+        <div>
+            <div class="mrgn">
+                <input asp-for="Email" class="form-control" />
+            </div>
+        </div>
+        <div>
+            <div class="mrgn">
+                <input asp-for="Password" class="form-control" />
+            </div>
+        </div>
+        <div>
+            <input class="enter_submit" type="submit" value="Войти" />
+        </div>
+    </form>
+</div>
