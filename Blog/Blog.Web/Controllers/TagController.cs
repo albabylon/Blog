@@ -1,6 +1,8 @@
 ﻿using Blog.Application.Contracts.Interfaces;
 using Blog.Application.Exceptions;
+using Blog.Domain.Identity;
 using Blog.DTOs.Tag;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Web.Controllers
@@ -47,6 +49,7 @@ namespace Blog.Web.Controllers
 
         [HttpPut]
         [Route("[action]/{id}")]
+        [Authorize(Roles = $"{SystemRoles.User}, {SystemRoles.Moderator}, {SystemRoles.Admin}")]
         public async Task<IActionResult> Edit(EditTagDTO dto, int id)
         {
             if (id != dto.Id)
@@ -65,6 +68,7 @@ namespace Blog.Web.Controllers
 
         [HttpDelete]
         [Route("[action]/{id}")]
+        [Authorize(Roles = $"{SystemRoles.User}, {SystemRoles.Moderator}, {SystemRoles.Admin}")]
         public async Task<IActionResult> Delete(int id)
         {
             await _tagService.DeleteTagAsync(id);

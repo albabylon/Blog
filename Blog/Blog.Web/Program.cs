@@ -11,6 +11,7 @@ using Blog.Infrastructure.Extensions;
 using Blog.Infrastructure.Repositories;
 using Blog.Web.Common.Mapping;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -79,10 +80,20 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+//вкл/выкл кэширование статических файлов
+var cachePeriod = app.Environment.IsDevelopment() ? "0" : "604800";
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = ctx =>
+    {
+        ctx.Context.Response.Headers.Append("Cache-Control", $"public, max-age={cachePeriod}");
+    }
+});
+
 app.UseHttpsRedirection();
 app.UseRouting();
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 
 //endpoints
 app.MapStaticAssets();

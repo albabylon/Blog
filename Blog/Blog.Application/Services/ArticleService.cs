@@ -15,15 +15,18 @@ namespace Blog.Application.Services
         private readonly ArticlesRepository _articleRepos;
         private readonly TagsRepository _tagRepos;
         private readonly UserManager<User> _userManager;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public ArticleService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<User> userManager)
+        public ArticleService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<User> userManager, IUserService userService)
         {
             _articleRepos = unitOfWork.GetRepository<Article>() as ArticlesRepository 
                 ?? throw new Exception();
             _tagRepos = unitOfWork.GetRepository<Tag>() as TagsRepository
                 ?? throw new Exception();
             _userManager = userManager
+                ?? throw new Exception();
+            _userService = userService
                 ?? throw new Exception();
             _mapper = mapper;
         }
@@ -76,13 +79,14 @@ namespace Blog.Application.Services
             await _articleRepos.Create(article);
         }
 
-        public async Task EditArticleAsync(EditArticleDTO dto, string authorId)
+        public async Task EditArticleAsync(EditArticleDTO dto, string userId)
         {
             var article = await _articleRepos.Get(dto.Id)
                 ?? throw new NotFoundException($"Статья {dto.Id} не найдена");
 
-            if (article.AuthorId != authorId)
-                throw new UnauthorizedAccessException($"Нет прав доступа для редактирования этой статьи");
+            var hasPriorRole = await _userService.HasPriorityRole(userId);
+            if (article.AuthorId != userId && !hasPriorRole)
+                throw new UnauthorizedAccessException($"Нет прав доступа");
 
             article.Title = dto.Title;
             article.Content = dto.Content;
@@ -106,9 +110,14 @@ namespace Blog.Application.Services
             await _articleRepos.Update(article);
         }
 
-        public async Task DeleteArticleAsync(int articleId)
+        public async Task DeleteArticleAsync(int articleId, string userId)
         {
             var article = await _articleRepos.Get(articleId);
+
+            var hasPriorRole = await _userService.HasPriorityRole(userId);
+            if (article.AuthorId != userId && !hasPriorRole)
+                throw new UnauthorizedAccessException($"Нет прав доступа");
+
             await _articleRepos.Delete(article);
         }
     }

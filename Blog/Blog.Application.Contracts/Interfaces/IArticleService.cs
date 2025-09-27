@@ -9,7 +9,7 @@ namespace Blog.Application.Contracts.Interfaces
         Task<IEnumerable<ArticleDTO>> GetAllArticlesByAuthorAsync(string authorId);
         Task<IEnumerable<ArticleDTO>> GetAllArticlesByTagAsync(string tagName);
         Task CreateArticleAsync(CreateArticleDTO dto, string authorId);
-        Task EditArticleAsync(EditArticleDTO dto, string authorId);
-        Task DeleteArticleAsync(int articleId);
+        Task EditArticleAsync(EditArticleDTO dto, string userId);
+        Task DeleteArticleAsync(int articleId, string userId);
     }
 }

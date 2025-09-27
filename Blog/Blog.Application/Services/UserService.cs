@@ -59,7 +59,9 @@ namespace Blog.Application.Services
 
         public async Task<bool> UpdateUserRoleAsync(string userId, string role)
         {
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByIdAsync(userId) 
+                ?? throw new UserProblemException($"Не найден пользователь с {userId}");
+  
             var result = await _userManager.AddToRoleAsync(user, role);
 
             return result.Succeeded;
@@ -142,14 +144,8 @@ namespace Blog.Application.Services
 
         public async Task<bool> LoginUserAsync(LoginUserDTO dto)
         {
-            User? user = null;
-            if (dto.Email is not null)
-                user = await _userManager.FindByEmailAsync(dto.Email);
-            else if (dto.UserName is not null)
-                user = await _userManager.FindByNameAsync(dto.UserName);
-
-            if (user is null)
-                throw new NotFoundException($"Не найден пользватель с {dto.Email}");
+            var user = await _userManager.FindByEmailAsync(dto.Email) ??
+                throw new NotFoundException($"Не найден пользователь с {dto.Email}"); ;
 
             var result = await _signInManager.PasswordSignInAsync(user, dto.Password, dto.RememberMe, false);
 
@@ -176,6 +172,16 @@ namespace Blog.Application.Services
         public bool IsLogged(ClaimsPrincipal claims)
         {
             return _signInManager.IsSignedIn(claims);
+        }
+
+        public async Task<bool> HasPriorityRole(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId) 
+                ?? throw new UserProblemException($"Не найден пользователь с {userId}");
+            
+            var roles = await _userManager.GetRolesAsync(user);
+            
+            return roles.Any(x => x == SystemRoles.Admin || x == SystemRoles.Moderator);
         }
     }
 }

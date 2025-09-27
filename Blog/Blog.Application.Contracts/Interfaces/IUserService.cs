@@ -18,5 +18,7 @@ namespace Blog.Application.Contracts.Interfaces
         Task AddCustomClaimsAsync(string id, IEnumerable<Claim> claims);
 
         bool IsLogged(ClaimsPrincipal claims);
+
+        Task<bool> HasPriorityRole(string userId);
     }
 }

@@ -1,13 +1,10 @@
 ﻿using AutoMapper;
 using Blog.Application.Contracts.Interfaces;
 using Blog.Application.Exceptions;
-using Blog.Domain.Identity;
 using Blog.DTOs.User;
 using Blog.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.Security.Claims;
 
 namespace Blog.Web.Controllers.Account
 {
@@ -51,7 +48,7 @@ namespace Blog.Web.Controllers.Account
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken] //от CSRF-атак
+        //[ValidateAntiForgeryToken] //от CSRF-атак
         [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel model)
         {

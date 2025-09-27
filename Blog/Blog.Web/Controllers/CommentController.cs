@@ -1,5 +1,7 @@
 ﻿using Blog.Application.Contracts.Interfaces;
+using Blog.Domain.Identity;
 using Blog.DTOs.Comment;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -52,23 +54,40 @@ namespace Blog.Web.Controllers
 
         [HttpPut]
         [Route("[action]/{id}")]
+        [Authorize(Roles = $"{SystemRoles.User}, {SystemRoles.Moderator}, {SystemRoles.Admin}")]
         public async Task<IActionResult> Edit(EditCommentDTO dto, int id)
         {
-            if (id != dto.Id)
-                return BadRequest("Несоответствие ID комментария");
+            try
+            {
+                if (id != dto.Id)
+                    return BadRequest("Несоответствие ID комментария");
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            await _commentService.EditCommentAsync(dto, userId);
-            return Json(dto);
+                await _commentService.EditCommentAsync(dto, userId);
+                return Json(dto);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Forbid(ex.Message);
+            }
         }
 
         [HttpDelete]
         [Route("[action]/{id}")]
+        [Authorize(Roles = $"{SystemRoles.User}, {SystemRoles.Moderator}, {SystemRoles.Admin}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _commentService.DeleteCommentAsync(id);
-            return Ok();
+            try
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                await _commentService.DeleteCommentAsync(id, userId);
+                return Ok();
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Forbid(ex.Message);
+            }
         }
     }
 }

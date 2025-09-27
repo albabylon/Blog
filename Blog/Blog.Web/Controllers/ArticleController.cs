@@ -1,6 +1,8 @@
 ﻿using Blog.Application.Contracts.Interfaces;
 using Blog.Application.Exceptions;
+using Blog.Domain.Identity;
 using Blog.DTOs.Article;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -68,6 +70,7 @@ namespace Blog.Web.Controllers
 
         [HttpPut]
         [Route("[action]/{id}")]
+        [Authorize(Roles = $"{SystemRoles.User}, {SystemRoles.Moderator}, {SystemRoles.Admin}")]
         public async Task<IActionResult> Edit(EditArticleDTO dto, int id)
         {
             if (id != dto.Id)
@@ -91,10 +94,19 @@ namespace Blog.Web.Controllers
 
         [HttpDelete]
         [Route("[action]/{id}")]
+        [Authorize(Roles = $"{SystemRoles.User}, {SystemRoles.Moderator}, {SystemRoles.Admin}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _articleService.DeleteArticleAsync(id);
-            return Ok();
+            try
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                await _articleService.DeleteArticleAsync(id, userId);
+                return Ok();
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Forbid(ex.Message);
+            }
         }
     }
 }

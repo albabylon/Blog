@@ -7,7 +7,7 @@ namespace Blog.Application.Contracts.Interfaces
         Task<CommentDTO> GetCommentAsync(int commentId);
         Task<IEnumerable<CommentDTO>> GetAllCommentsAsync();
         Task CreateCommentAsync(CreateCommentDTO dto, int articleId, string authorId);
-        Task EditCommentAsync(EditCommentDTO dto, string authorId);
-        Task DeleteCommentAsync(int commentId);
+        Task EditCommentAsync(EditCommentDTO dto, string userId);
+        Task DeleteCommentAsync(int commentId, string userId);
     }
 }
