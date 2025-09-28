@@ -1,9 +1,12 @@
-﻿using Blog.Application.Contracts.Interfaces;
+﻿using AutoMapper;
+using Blog.Application.Contracts.Interfaces;
 using Blog.Application.Exceptions;
 using Blog.Domain.Identity;
 using Blog.DTOs.Tag;
+using Blog.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace Blog.Web.Controllers
 {
@@ -11,10 +14,12 @@ namespace Blog.Web.Controllers
     public class TagController : Controller
     {
         private readonly ITagService _tagService;
+        private readonly IMapper _mapper;
 
-        public TagController(ITagService tagService)
+        public TagController(ITagService tagService, IMapper mapper)
         {
             _tagService = tagService;
+            _mapper = mapper;
         }
 
 
@@ -41,10 +46,15 @@ namespace Blog.Web.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        public async Task<IActionResult> Create(CreateTagDTO dto)
+        public async Task<IActionResult> Create(TagViewModel model)
         {
-            await _tagService.CreateTagAsync(dto);
-            return Json(dto);
+            if (ModelState.IsValid)
+            {
+                var dto = _mapper.Map<CreateTagDTO>(model);
+                await _tagService.CreateTagAsync(dto);
+                return Json(dto);
+            }
+            return Content("Ошибка");
         }
 
         [HttpPut]

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Blog.DTOs.Tag;
 using Blog.DTOs.User;
 using Blog.Web.ViewModels;
 
@@ -9,6 +10,8 @@ namespace Blog.Web.Common.Mapping
         public WebMappingProfile()
         {
             CreateMap<LoginViewModel, LoginUserDTO>();
+
+            CreateMap<TagViewModel, CreateTagDTO>();
         }
     }
 }

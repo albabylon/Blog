@@ -1,8 +1,10 @@
 ﻿using Blog.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Domain.Identity
 {
+    [Comment("Таблица пользователей")]
     public class User : IdentityUser
     {
         public string Nickname { get; set; }

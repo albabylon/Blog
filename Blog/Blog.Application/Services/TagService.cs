@@ -63,5 +63,15 @@ namespace Blog.Application.Services
             var tag = await _tagRepos.Get(tagId);
             await _tagRepos.Delete(tag);
         }
+
+        public async Task<bool> IsTagNameExistAsync(string tagName)
+        {
+            var result = await _tagRepos.GetByName(tagName);
+
+            if (result != null)
+                return true;
+
+            return false;
+        }
     }
 }

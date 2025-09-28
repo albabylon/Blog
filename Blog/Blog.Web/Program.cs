@@ -2,16 +2,12 @@ using AutoMapper;
 using Blog.Application.Common.Mapping;
 using Blog.Application.Contracts.Interfaces;
 using Blog.Application.Services;
-using Blog.Application.Validation.Login;
-using Blog.Application.Validation.Tag;
 using Blog.Domain.Entities;
 using Blog.Domain.Identity;
 using Blog.Infrastructure.Data;
 using Blog.Infrastructure.Extensions;
 using Blog.Infrastructure.Repositories;
 using Blog.Web.Common.Mapping;
-using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,7 +20,7 @@ builder.Services
     .AddScoped<IUserService, UserService>();
 
 //mapping
-var mapperConfig = new MapperConfiguration(cfg => 
+var mapperConfig = new MapperConfiguration(cfg =>
 {
     cfg.AddProfile(new AppMappingProfile());
     cfg.AddProfile(new WebMappingProfile());
@@ -33,8 +29,9 @@ var mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 
 //validation
-//builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginUserDtoValidation>());
-//builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateTagDtoValidation>());
+//builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginUserDtoValidation>()); 
+//устарело
+
 
 //db connection
 var connection = builder.Configuration.GetConnectionString("DefaultConnection");

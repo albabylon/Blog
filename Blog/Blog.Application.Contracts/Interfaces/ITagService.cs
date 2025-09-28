@@ -10,5 +10,7 @@ namespace Blog.Application.Contracts.Interfaces
         Task CreateTagAsync(CreateTagDTO dto);
         Task EditTagAsync(EditTagDTO dto);
         Task DeleteTagAsync(int tagId);
+
+        Task<bool> IsTagNameExistAsync(string tagName);
     }
 }

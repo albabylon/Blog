@@ -1,8 +1,10 @@
 ﻿using Blog.Domain.Base;
 using Blog.Domain.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Domain.Entities
 {
+    [Comment("Таблица комментариев пользователей")]
     public class Comment : BaseEntity
     {
         public string Content { get; set; }
