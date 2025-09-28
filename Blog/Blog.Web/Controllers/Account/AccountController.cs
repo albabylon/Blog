@@ -2,7 +2,7 @@
 using Blog.Application.Contracts.Interfaces;
 using Blog.Application.Exceptions;
 using Blog.DTOs.User;
-using Blog.Web.ViewModels;
+using Blog.Web.ViewModels.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

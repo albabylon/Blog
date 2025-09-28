@@ -3,10 +3,9 @@ using Blog.Application.Contracts.Interfaces;
 using Blog.Application.Exceptions;
 using Blog.Domain.Identity;
 using Blog.DTOs.Tag;
-using Blog.Web.ViewModels;
+using Blog.Web.ViewModels.Tag;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
 
 namespace Blog.Web.Controllers
 {
@@ -60,8 +59,10 @@ namespace Blog.Web.Controllers
         [HttpPut]
         [Route("[action]/{id}")]
         [Authorize(Roles = $"{SystemRoles.User}, {SystemRoles.Moderator}, {SystemRoles.Admin}")]
-        public async Task<IActionResult> Edit(EditTagDTO dto, int id)
+        public async Task<IActionResult> Edit(TagEditViewModel model, int id)
         {
+            var dto = _mapper.Map<EditTagDTO>(model);
+            
             if (id != dto.Id)
                 return BadRequest("Несоответствие ID тега");
 

@@ -1,6 +1,6 @@
 ﻿namespace Blog.Web.Middleware
 {
-    public class CustomExceptionHandlerMeddleware
+    public class CustomExceptionHandlerMiddleware
     {
 
     }

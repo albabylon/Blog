@@ -1,6 +1,8 @@
-﻿using Blog.Application.Contracts.Interfaces;
+﻿using AutoMapper;
+using Blog.Application.Contracts.Interfaces;
 using Blog.Domain.Identity;
 using Blog.DTOs.Comment;
+using Blog.Web.ViewModels.Comment;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -11,11 +13,12 @@ namespace Blog.Web.Controllers
     public class CommentController : Controller
     {
         private readonly ICommentService _commentService;
+        private readonly IMapper _mapper;
 
-
-        public CommentController(ICommentService commentService)
+        public CommentController(ICommentService commentService, IMapper mapper)
         {
             _commentService = commentService;
+            _mapper = mapper;
         }
 
 
@@ -42,8 +45,10 @@ namespace Blog.Web.Controllers
 
         [HttpPost]
         [Route("[action]/{articleId}")]
-        public async Task<IActionResult> Create(CreateCommentDTO dto, int articleId)
+        public async Task<IActionResult> Create(CommentViewModel model, int articleId)
         {
+            var dto = _mapper.Map<CreateCommentDTO>(model);
+
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null)
                 return BadRequest("Пользователь не найден");
@@ -55,10 +60,12 @@ namespace Blog.Web.Controllers
         [HttpPut]
         [Route("[action]/{id}")]
         [Authorize(Roles = $"{SystemRoles.User}, {SystemRoles.Moderator}, {SystemRoles.Admin}")]
-        public async Task<IActionResult> Edit(EditCommentDTO dto, int id)
+        public async Task<IActionResult> Edit(CommentViewModel model, int id)
         {
             try
             {
+                var dto = _mapper.Map<EditCommentDTO>(model);
+
                 if (id != dto.Id)
                     return BadRequest("Несоответствие ID комментария");
 

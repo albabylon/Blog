@@ -1,7 +1,9 @@
-﻿using Blog.Application.Contracts.Interfaces;
+﻿using AutoMapper;
+using Blog.Application.Contracts.Interfaces;
 using Blog.Application.Exceptions;
 using Blog.Domain.Identity;
 using Blog.DTOs.Article;
+using Blog.Web.ViewModels.Article;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -13,11 +15,13 @@ namespace Blog.Web.Controllers
     {
         private readonly IArticleService _articleService;
         private readonly IUserService _userService;
+        private readonly IMapper _mapper;
 
-        public ArticleController(IArticleService articleService, IUserService userService)
+        public ArticleController(IArticleService articleService, IUserService userService, IMapper mapper)
         {
             _articleService = articleService;
             _userService = userService;
+            _mapper = mapper;
         }
 
 
@@ -60,8 +64,10 @@ namespace Blog.Web.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        public async Task<IActionResult> Create(CreateArticleDTO dto)
+        public async Task<IActionResult> Create(ArticleViewModel model)
         {
+            var dto = _mapper.Map<CreateArticleDTO>(model);
+
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             await _articleService.CreateArticleAsync(dto, userId);
 
@@ -71,8 +77,10 @@ namespace Blog.Web.Controllers
         [HttpPut]
         [Route("[action]/{id}")]
         [Authorize(Roles = $"{SystemRoles.User}, {SystemRoles.Moderator}, {SystemRoles.Admin}")]
-        public async Task<IActionResult> Edit(EditArticleDTO dto, int id)
+        public async Task<IActionResult> Edit(ArticleEditViewModel model, int id)
         {
+            var dto = _mapper.Map<EditArticleDTO>(model);
+            
             if (id != dto.Id)
                 return BadRequest("Несоответствие ID статьи");
 

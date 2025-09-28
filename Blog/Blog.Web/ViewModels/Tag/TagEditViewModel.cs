@@ -1,10 +1,11 @@
 ﻿using Blog.Application.Contracts.Interfaces;
 using System.ComponentModel.DataAnnotations;
 
-namespace Blog.Web.ViewModels
+namespace Blog.Web.ViewModels.Tag
 {
-    public class TagViewModel : IValidatableObject
+    public class TagEditViewModel : IValidatableObject
     {
+        public int Id { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
 
@@ -19,5 +20,6 @@ namespace Blog.Web.ViewModels
 
             return errors;
         }
+
     }
 }
