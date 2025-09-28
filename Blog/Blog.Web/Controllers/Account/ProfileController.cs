@@ -23,10 +23,11 @@ namespace Blog.Web.Controllers.Account
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            // Просмотр профиля текущего пользователя
-            return View();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var dto = await _userService.GetUserByIdAsync(userId);
+            return View(dto);
         }
 
         [HttpGet]

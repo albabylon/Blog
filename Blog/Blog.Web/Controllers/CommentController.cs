@@ -22,9 +22,10 @@ namespace Blog.Web.Controllers
         }
 
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var dto = await _commentService.GetAllCommentsAsync();
+            return View(dto);
         }
 
         [HttpGet]
