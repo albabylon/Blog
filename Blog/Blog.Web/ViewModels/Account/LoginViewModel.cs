@@ -4,12 +4,12 @@ namespace Blog.Web.ViewModels.Account
 {
     public class LoginViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Необхоимо ввести Email")]
         [EmailAddress]
         [Display(Name = "Email", Prompt = "Email")]
         public string? Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Необхоимо ввести Пароль")]
         [DataType(DataType.Password)]
         [Display(Name = "Пароль", Prompt = "Пароль")]
         public string Password { get; set; }

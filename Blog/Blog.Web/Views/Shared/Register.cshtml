@@ -1,0 +1,28 @@
+﻿@using Blog.Web.ViewModels.Account
+@model RegisterViewModel;
+
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="d-flex align-items-center justify-content-center vh-100">
+    <div class="w-100" style="max-width: 360px;">
+        <h1 class="text-center mb-4">Регистрация</h1>
+
+        <form method="post" asp-controller="Account" asp-action="Register">
+            <img src="ProfilePictureUrl" class="img-fluid w-100 p-1" alt="profile-default-image">
+            
+            <input asp-for="Email" class="form-control mb-2">
+            <input asp-for="Nickname" class="form-control mb-2">
+            <input asp-for="Password" class="form-control mb-2">
+            <input asp-for="PasswordConfirm" class="form-control mb-2">
+            <input asp-for="Role" class="form-control mb-2">
+            <input asp-for="Bio" class="form-control mb-2">
+            
+            <button type="submit" class="w-100 btn btn-lg btn-primary">Зарегистрироваться</button>
+
+            <div asp-validation-summary="All" class="text-danger d-flex justify-content-center mt-2"></div>
+        </form>
+    </div>
+</div>

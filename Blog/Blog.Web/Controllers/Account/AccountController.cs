@@ -30,14 +30,19 @@ namespace Blog.Web.Controllers.Account
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Register(CreateUserDTO createUser)
+        public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            var result = await _userService.CreateUserAsync(createUser);
+            if (ModelState.IsValid)
+            {
+                var createUser = _mapper.Map<CreateUserDTO>(model);
+                var result = await _userService.CreateUserAsync(createUser);
 
-            if (result)
-                return Json(createUser);
-            else
-                return Content("Не получилось");
+                if (result)
+                    return RedirectToAction("Index", "Profile");
+                else
+                    ModelState.AddModelError("", "Ошибка при регистрации");
+            }
+            return View(model);
         }
 
         [HttpGet]
