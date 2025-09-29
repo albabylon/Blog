@@ -145,7 +145,7 @@ namespace Blog.Application.Services
         public async Task<bool> LoginUserAsync(LoginUserDTO dto)
         {
             var user = await _userManager.FindByEmailAsync(dto.Email) ??
-                throw new NotFoundException($"Не найден пользователь с {dto.Email}"); ;
+                throw new NotFoundException($"Не найден пользователь с {dto.Email}");
 
             var result = await _signInManager.PasswordSignInAsync(user, dto.Password, dto.RememberMe, false);
 

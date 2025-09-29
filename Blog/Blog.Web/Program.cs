@@ -32,6 +32,12 @@ builder.Services.AddSingleton(mapper);
 //builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginUserDtoValidation>()); 
 //устарело
 
+//coockie
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.ExpireTimeSpan = TimeSpan.FromDays(30);
+    options.SlidingExpiration = true;
+});
 
 //db connection
 var connection = builder.Configuration.GetConnectionString("DefaultConnection");

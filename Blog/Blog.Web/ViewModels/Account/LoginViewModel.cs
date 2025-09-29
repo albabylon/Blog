@@ -6,12 +6,12 @@ namespace Blog.Web.ViewModels.Account
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Email", Prompt = "Введите email")]
+        [Display(Name = "Email", Prompt = "Email")]
         public string? Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Пароль", Prompt = "Введите пароль")]
+        [Display(Name = "Пароль", Prompt = "Пароль")]
         public string Password { get; set; }
 
         public bool RememberMe { get; set; }

@@ -25,7 +25,7 @@ namespace Blog.Web.Controllers
         public async Task<IActionResult> Index()
         {
             var dto = await _commentService.GetAllCommentsAsync();
-            return View(dto);
+            return Json(dto);
         }
 
         [HttpGet]

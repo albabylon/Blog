@@ -27,7 +27,7 @@ namespace Blog.Web.Controllers.Account
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var dto = await _userService.GetUserByIdAsync(userId);
-            return View(dto);
+            return Json(dto);
         }
 
         [HttpGet]

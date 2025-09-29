@@ -48,7 +48,7 @@ namespace Blog.Web.Controllers.Account
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken] //от CSRF-атак
+        [ValidateAntiForgeryToken] //от CSRF-атак
         [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
@@ -67,19 +67,18 @@ namespace Blog.Web.Controllers.Account
                         }
                         else
                         {
+                            ModelState.Clear();
                             return RedirectToAction("Index", "Home");
                         }
                     }
                     else
                     {
                         ModelState.AddModelError("", "Неправильный логин и (или) пароль");
-                        return Content($"Неправильный логин и (или) пароль");
                     }
                 }
                 catch (NotFoundException ex)
                 {
-                    ModelState.AddModelError("", ex.Message);
-                    return Content($"{ex.Message}");
+                    ModelState.AddModelError("", "Не найден пользователь");
                 }
             }
 

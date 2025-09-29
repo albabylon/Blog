@@ -25,7 +25,7 @@ namespace Blog.Web.Controllers
         public async Task<IActionResult> Index()
         {
             var dto = await _tagService.GetAllTagsAsync();
-            return View(dto);
+            return Json(dto);
         }
 
         [HttpGet]

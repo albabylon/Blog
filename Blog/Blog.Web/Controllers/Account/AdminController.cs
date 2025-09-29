@@ -16,7 +16,6 @@ namespace Blog.Web.Controllers.Account
             _userService = userService;
         }
 
-        [HttpGet]
         public async Task<IActionResult> Index()
         {   
             var allUsers = await _userService.GetAllUsersAsync();

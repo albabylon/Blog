@@ -1,8 +1,25 @@
-﻿@{
+﻿@using Blog.Application.Contracts.Interfaces;
+@inject IUserService UserService;
+
+@model Blog.Web.ViewModels.Account.LoginViewModel;
+
+@{
     ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+@if (UserService.IsLogged(User))
+{
+    <script>
+        window.location.href = '@Url.Action("Index", "Profile")';
+    </script>
+}
+else
+{
+    <div>
+        <div>
+            <partial name="Login" model="Model" />
+        </div>
+    </div>
+}
