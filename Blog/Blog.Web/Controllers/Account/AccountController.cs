@@ -25,6 +25,7 @@ namespace Blog.Web.Controllers.Account
         [AllowAnonymous]
         public IActionResult Register()
         {
+            ModelState.Clear();
             return View();
         }
 

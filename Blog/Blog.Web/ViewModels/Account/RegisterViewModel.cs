@@ -29,14 +29,10 @@ namespace Blog.Web.ViewModels.Account
         public string PasswordConfirm { get; set; }
 
 
-        [Display(Name = "Роль", Prompt = "Роль")]
-        public string Role { get; set; }
-
-
         [Display(Name = "О вас", Prompt = "О вас")]
-        public string Bio { get; set; }
+        public string? Bio { get; set; }
 
 
-        public string ProfilePictureUrl { get; set; }
+        public string? ProfilePictureUrl { get; set; }
     }
 }
