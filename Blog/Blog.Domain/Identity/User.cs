@@ -8,8 +8,8 @@ namespace Blog.Domain.Identity
     public class User : IdentityUser
     {
         public string Nickname { get; set; }
-        public string Bio { get; set; }
-        public string ProfilePictureUrl { get; set; }
+        public string? Bio { get; set; }
+        public string? ProfilePictureUrl { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; }

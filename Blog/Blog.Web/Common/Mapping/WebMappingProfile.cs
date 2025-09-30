@@ -15,6 +15,7 @@ namespace Blog.Web.Common.Mapping
         public WebMappingProfile()
         {
             CreateMap<LoginViewModel, LoginUserDTO>();
+            CreateMap<RegisterViewModel, CreateUserDTO>();
             CreateMap<ProfileEditViewModel, EditUserDTO>();
 
             CreateMap<ArticleViewModel, CreateArticleDTO>();
