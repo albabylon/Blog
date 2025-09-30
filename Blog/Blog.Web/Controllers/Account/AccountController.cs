@@ -35,11 +35,14 @@ namespace Blog.Web.Controllers.Account
         {
             if (ModelState.IsValid)
             {
+                model.Bio ??= string.Empty;
+                model.ProfilePictureUrl ??= string.Empty;
+
                 var createUser = _mapper.Map<CreateUserDTO>(model);
                 var result = await _userService.CreateUserAsync(createUser);
 
                 if (result)
-                    return RedirectToAction("Index", "Profile");
+                    return RedirectToAction("Index", "Home");
                 else
                     ModelState.AddModelError("", "Ошибка при регистрации");
             }
@@ -74,7 +77,7 @@ namespace Blog.Web.Controllers.Account
                         else
                         {
                             ModelState.Clear();
-                            return RedirectToAction("Index", "Home");
+                            return RedirectToAction("All", "Article");
                         }
                     }
                     else

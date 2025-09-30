@@ -18,6 +18,8 @@ namespace Blog.Web.Common.Mapping
             CreateMap<RegisterViewModel, CreateUserDTO>();
             CreateMap<ProfileEditViewModel, EditUserDTO>();
 
+            CreateMap<ArticleDTO, ArticleViewModel>()
+                .ForMember(d => d.TagNames, opt => opt.MapFrom(s => s.Tags.Select(t => t.Name)));
             CreateMap<ArticleViewModel, CreateArticleDTO>();
             CreateMap<ArticleEditViewModel, EditArticleDTO>();
 

@@ -1,0 +1,11 @@
+﻿@using Blog.Application.Contracts.Interfaces;
+@inject IUserService UserService;
+
+<div>
+    @if (UserService.IsLogged(User))
+    {
+        <form method="post" asp-controller="Account" asp-action="Logout">
+            <button class="btn btn-outline-secondary" type="submit">Выйти</button>
+        </form>
+    }
+</div>

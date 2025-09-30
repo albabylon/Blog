@@ -14,8 +14,10 @@ namespace Blog.Infrastructure.Repositories
 
         public async Task<IEnumerable<Article>> GetAllByAuthorId(string authorId)
         { 
-            return await Set.Where(x => x.AuthorId ==  authorId).ToListAsync() 
-                ?? throw new Exception($"{authorId} не найден");          
+            return await Set.Include(a => a.ArticleTags)
+                            .ThenInclude(ac => ac.Tag)
+                            .Where(x => x.AuthorId ==  authorId).ToListAsync() 
+                            ?? throw new Exception($"{authorId} не найден");          
         }
 
         public async Task<IEnumerable<Article>> GetAllByTag(string tagName)
@@ -27,6 +29,15 @@ namespace Blog.Infrastructure.Repositories
                             .OrderByDescending(a => a.CreatedAt)
                             .ToListAsync() 
                             ?? throw new Exception($"статьи по тегу {tagName} не найдены");
+        }
+
+        public override async Task<IEnumerable<Article>> GetAll()
+        {
+            return await Set.Include(a => a.ArticleTags)
+                            .ThenInclude(ac => ac.Tag)
+                            .Include(a => a.Author)
+                            .OrderByDescending(a => a.CreatedAt)
+                            .ToListAsync();
         }
     }
 }

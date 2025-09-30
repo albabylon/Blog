@@ -25,7 +25,8 @@ namespace Blog.Application.Common.Mapping
 
             //article
             CreateMap<Article, ArticleDTO>()
-                .ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => src.Author.UserName));
+                .ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => src.Author != null ? src.Author.UserName : null))
+                .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.ArticleTags != null ? src.ArticleTags.Select(x => x.Tag) : null));
             CreateMap<CreateArticleDTO, Article>();
             CreateMap<EditArticleDTO, Article>();
 

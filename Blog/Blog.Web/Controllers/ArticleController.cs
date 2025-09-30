@@ -25,12 +25,6 @@ namespace Blog.Web.Controllers
         }
 
 
-        public async Task<IActionResult> Index()
-        {
-            var dto = await _articleService.GetAllArticlesAsync();
-            return Json(dto);
-        }
-
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> Get(int id)
@@ -53,13 +47,15 @@ namespace Blog.Web.Controllers
         {
             if (tagName is null)
             {
-                var result = await _articleService.GetAllArticlesAsync();
-                return Json(result);
+                var dto = await _articleService.GetAllArticlesAsync();
+                var model = _mapper.Map<IEnumerable<ArticleViewModel>>(dto);
+                return View("ArticleList", model);
             }
             else
             {
-                var result = await _articleService.GetAllArticlesByTagAsync(tagName);
-                return Json(result);
+                var dto = await _articleService.GetAllArticlesByTagAsync(tagName);
+                var model = _mapper.Map<IEnumerable<ArticleViewModel>>(dto);
+                return View("ArticleList", model);
             }
         }
 

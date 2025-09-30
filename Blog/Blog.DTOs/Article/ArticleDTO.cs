@@ -1,4 +1,6 @@
-﻿namespace Blog.DTOs.Article
+﻿using Blog.DTOs.Tag;
+
+namespace Blog.DTOs.Article
 {
     public class ArticleDTO
     {
@@ -7,5 +9,6 @@
         public string Content { get; set; }
         public DateTime CreatedAt { get; set; }
         public string AuthorName { get; set; }
+        public IEnumerable<TagDTO> Tags { get; set; }
     }
 }

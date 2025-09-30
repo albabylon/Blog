@@ -12,7 +12,7 @@
 @if (UserService.IsLogged(User))
 {
     <script>
-        window.location.href = '@Url.Action("Index", "Profile")';
+        window.location.href = '@Url.Action("All", "Article")';
     </script>
 }
 else
