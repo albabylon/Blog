@@ -1,0 +1,29 @@
+﻿@model Blog.Web.ViewModels.Article.ArticleViewModel
+
+
+@{
+	ViewData["Title"] = "Статьи";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="block-article align-top justify-content-center">
+	<div class="card border-primary text-secondary-emphasis">
+		<div class="card-header border-primary bg-transparent">
+			<div class="d-flex flex-row">
+				<img src="../images/avatar/avatar-deafult.png" class="avatar-25 rounded-circle me-2" alt="avatar-image">
+				@Model.AuthorName
+			</div>
+			<div class="card-footer bg-transparent" style="min-height: 40px">
+				@foreach (var tagName in @Model.TagNames)
+				{
+					<span class="badge text-bg-secondary">@tagName</span>
+				}
+			</div>
+		</div>
+		<div class="card-body">
+			<h5 class="card-title">@Model.Title</h5>
+			<p class="card-text">@Model.Content</p>
+		</div>
+	</div>
+</div>

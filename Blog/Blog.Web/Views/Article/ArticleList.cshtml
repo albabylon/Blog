@@ -10,23 +10,25 @@
 	<div class="row row-cols-2 g-2">
 		@foreach (var article in Model)
 		{
-			<div class="card border-primary text-secondary-emphasis">
-				<div class="card-header border-primary bg-transparent">
-					<div class="d-flex flex-row">
-						<img src="../images/avatar/avatar-deafult.png" class="avatar-25 rounded-circle me-2" alt="avatar-image">
-						@article.AuthorName
+			<div class="col">
+				<div class="card border-primary text-secondary-emphasis">
+					<div class="card-header border-primary bg-transparent">
+						<div class="d-flex flex-row">
+							<img src="../images/avatar/avatar-deafult.png" class="avatar-25 rounded-circle me-2" alt="avatar-image">
+							@article.AuthorName
+						</div>
 					</div>
-				</div>
-				<div class="card-body">
-					<h5 class="card-title">@article.Title</h5>
-					<p class="card-text">@article.PartOfContent</p>
-					<a href="#" class="card-link">Читать полностью...</a>
-				</div>
-				<div class="card-footer bg-transparent" style="min-height: 40px">
-					@foreach (var tagName in article.TagNames)
-					{
-						<span class="badge text-bg-secondary">@tagName</span>
-					}
+					<div class="card-body">
+						<h5 class="card-title">@article.Title</h5>
+						<p class="card-text">@article.PartOfContent</p>
+						<a href="@Url.Action("Index", "Article", new { id = article.Id })" class="card-link">Читать полностью...</a>
+					</div>
+					<div class="card-footer bg-transparent" style="min-height: 40px">
+						@foreach (var tagName in article.TagNames)
+						{
+							<span class="badge text-bg-secondary">@tagName</span>
+						}
+					</div>
 				</div>
 			</div>
 		}

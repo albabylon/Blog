@@ -3,26 +3,71 @@
 
 @{
     ViewData["Title"] = "Register";
+    ViewData["BodyClass"] = "profile-page";
+    ViewBag.HideFooter = true;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="block-main d-flex align-items-center justify-content-center vh-100">
-    <div class="w-100" style="max-width: 360px;">
-        <h1 class="text-center mb-4">Регистрация</h1>
 
-        <form method="post" asp-controller="Account" asp-action="Register">
-            <div class="d-flex justify-content-center">
-                <img src="images/avatar/avatar-deafult.png" class="rounded-circle img-fluid img-thumbnail w-50 p-1 mb-4" alt="avatar-image">
+<div class="container-fluid h-100">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card sticky-top" style="top: 1rem;">
+                <div class="card-body text-center">
+                    <img src="images/avatar/avatar-deafult.png" class="rounded-circle img-fluid border mb-3"
+                         alt="avatar" style="max-width: 150px;">
+                    <h4>@Model.Nickname</h4>
+                    <p class="text-muted">@Model.Email</p>
+                    <p class="small">@string.Join(", ", @Model.Role)</p>
+                    <p class="small">Дата регистрации: @Model.CreatedAt?.ToString("D")</p>
+
+                    <div class="d-grid gap-2 mt-3">
+                        <form method="get" asp-controller="Article" asp-action="Create">
+                            <button class="btn btn-primary w-100" type="submit">Создать статью</button>
+                        </form>
+                        <form ethod="get" asp-controller="Account" asp-action="Edit">
+                            <button class="btn btn-outline-secondary w-100" type="submit">Редактировать профиль</button>
+                        </form>
+                    </div>
+                </div>
             </div>
+        </div>
 
-            <input asp-for="Email" class="form-control mb-2">
-            <input asp-for="Nickname" class="form-control mb-2">
-            <input asp-for="Password" class="form-control mb-2">
-            <textarea asp-for="Bio" class="form-control mb-4"></textarea>
 
-            <button type="submit" class="w-100 btn btn-lg btn-primary">Зарегистрироваться</button>
-
-            <div asp-validation-summary="All" class="text-danger d-flex justify-content-center mt-2"></div>
-        </form>
+        <div class="col-md-9" style="max-height: 100vh; overflow-y: auto; padding-bottom: 250px;">
+            <div style="position: sticky; top: 0; z-index: 10;" class="bg-light">
+                <h3>Мои статьи</h3>
+                <hr />
+            </div>
+            <div class="row row-cols-1 g-3 mt-2">
+                @if (Model.Articles.Any())
+                {
+                    @foreach (var article in Model.Articles)
+                    {
+                        <div class="col">
+                            <div class="card border-primary h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">@article.Title</h5>
+                                    <p class="card-text">@article.PartOfContent</p>
+                                    <a href="@Url.Action("Index", "Article", new { id = article.Id })" class="card-link">Читать полностью...</a>
+                                </div>
+                                <div class="card-footer bg-transparent d-flex">
+                                    <form class="me-2" method="get" asp-controller="Article" asp-action="Edit" asp-route-id="@article.Id">
+                                        <button type="submit" class="btn btn-outline-secondary">Редактировать</button>
+                                    </form>
+                                    <form method="post" asp-controller="Article" asp-action="Delete" asp-route-id="@article.Id">
+                                        <button type="submit" class="btn btn-danger">Удалить</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <h5>Пока статей нету</h5>
+                }
+            </div>
+        </div>
     </div>
 </div>

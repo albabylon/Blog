@@ -127,6 +127,7 @@ namespace Blog.Application.Services
 
             var result = _mapper.Map<UserDTO>(user);
             result.Role = await _userManager.GetRolesAsync(user);
+            result.CreatedAt = user.CreatedAt;
 
             return result;
         }
@@ -138,6 +139,7 @@ namespace Blog.Application.Services
 
             var result = _mapper.Map<UserDTO>(user);
             result.Role = await _userManager.GetRolesAsync(user);
+            result.CreatedAt = user.CreatedAt;
 
             return result;
         }

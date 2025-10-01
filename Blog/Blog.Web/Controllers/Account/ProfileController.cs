@@ -30,7 +30,7 @@ namespace Blog.Web.Controllers.Account
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) 
                 ?? throw new Exception("Пользователь не найден");
-            
+
             var dto = await _userService.GetUserByIdAsync(userId);
             var model = _mapper.Map<ProfileViewModel>(dto);
 
@@ -48,7 +48,7 @@ namespace Blog.Web.Controllers.Account
             return View();
         }
 
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> Edit(ProfileEditViewModel model)
         {
             // Сохранение изменений профиля

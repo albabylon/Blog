@@ -29,7 +29,7 @@ namespace Blog.Web.Controllers.Account
             return Json(allUsers);
         }
 
-        [HttpDelete]
+        [HttpPost]
         [Route("[action]")]
         public async Task<IActionResult> Delete(string id)
         {
@@ -39,7 +39,7 @@ namespace Blog.Web.Controllers.Account
             return Content($"Удалить пользователя {id} не получилось");
         }
 
-        [HttpPut]
+        [HttpPost]
         [Route("[action]")]
         public async Task<IActionResult> UpdateRole(string userId, string role)
         {

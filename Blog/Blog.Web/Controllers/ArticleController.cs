@@ -27,10 +27,11 @@ namespace Blog.Web.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Index(int id)
         {
-            var result = await _articleService.GetArticleAsync(id);
-            return Json(result);
+            var dto = await _articleService.GetArticleAsync(id);
+            var model = _mapper.Map<ArticleViewModel>(dto);
+            return View("/Views/Article/Article.cshtml", model);
         }
 
         [HttpGet]
@@ -59,6 +60,16 @@ namespace Blog.Web.Controllers
             }
         }
 
+
+
+        [HttpGet]
+        [Route("[action]")]
+        public ActionResult Create()
+        {
+            var model = new ArticleViewModel();
+            return View("/Views/Article/ArticleEdit.cshtml", model);
+        }
+
         [HttpPost]
         [Route("[action]")]
         public async Task<IActionResult> Create(ArticleViewModel model)
@@ -70,11 +81,22 @@ namespace Blog.Web.Controllers
 
             return Json(dto);
         }
+        
 
-        [HttpPut]
+
+        [HttpGet]
+        [Route("[action]/{id}")]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var dto = await _articleService.GetArticleAsync(id);
+            var model = _mapper.Map<ArticleViewModel>(dto);
+            return View("/Views/Article/ArticleEdit.cshtml", model);
+        }
+
+        [HttpPost]
         [Route("[action]/{id}")]
         [Authorize(Roles = $"{SystemRoles.User}, {SystemRoles.Moderator}, {SystemRoles.Admin}")]
-        public async Task<IActionResult> Edit(ArticleEditViewModel model, int id)
+        public async Task<IActionResult> Edit(ArticleViewModel model, int id)
         {
             var dto = _mapper.Map<EditArticleDTO>(model);
             
@@ -85,7 +107,7 @@ namespace Blog.Web.Controllers
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 await _articleService.EditArticleAsync(dto, userId);
-                return Ok(new { Message = "Статья успешно обновлена" });
+                return View(new { Message = "Статья успешно обновлена" });
             }
             catch (NotFoundException ex)
             {
@@ -97,7 +119,9 @@ namespace Blog.Web.Controllers
             }
         }
 
-        [HttpDelete]
+
+
+        [HttpPost]
         [Route("[action]/{id}")]
         [Authorize(Roles = $"{SystemRoles.User}, {SystemRoles.Moderator}, {SystemRoles.Admin}")]
         public async Task<IActionResult> Delete(int id)
@@ -106,7 +130,7 @@ namespace Blog.Web.Controllers
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 await _articleService.DeleteArticleAsync(id, userId);
-                return Ok();
+                return View("/Views/Account/Profile.cshtml");
             }
             catch (UnauthorizedAccessException ex)
             {

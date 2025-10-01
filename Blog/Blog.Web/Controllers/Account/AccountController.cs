@@ -53,7 +53,7 @@ namespace Blog.Web.Controllers.Account
         [AllowAnonymous]
         public IActionResult Login(string? returnUrl = null)
         {
-            return View(new LoginViewModel { ReturnUrl = returnUrl });
+            return View("/Views/Account/Login.cshtml", new LoginViewModel { ReturnUrl = returnUrl });
         }
 
         [HttpPost]

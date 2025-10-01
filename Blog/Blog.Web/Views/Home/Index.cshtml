@@ -17,9 +17,7 @@
 }
 else
 {
-    <div>
-        <div>
-            <partial name="Login" model="Model" />
-        </div>
-    </div>
+    <script>
+        window.location.href = '@Url.Action("Login", "Account")';
+    </script>
 }
