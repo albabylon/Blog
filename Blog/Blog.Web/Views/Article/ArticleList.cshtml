@@ -6,11 +6,11 @@
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="d-flex align-items-center justify-content-center vh-100">
-	<div class="row row-cols-1 row-cols-sm-2 g-2">
+<div class="block-main align-top justify-content-center">
+	<div class="row row-cols-2 g-2">
 		@foreach (var article in Model)
 		{
-			<div class="card border-primary text-primary">
+			<div class="card border-primary text-secondary-emphasis">
 				<div class="card-header border-primary bg-transparent">
 					<div class="d-flex flex-row">
 						<img src="../images/avatar/avatar-deafult.png" class="avatar-25 rounded-circle me-2" alt="avatar-image">
@@ -19,9 +19,10 @@
 				</div>
 				<div class="card-body">
 					<h5 class="card-title">@article.Title</h5>
-					<p class="card-text">@article.Content</p>
+					<p class="card-text">@article.PartOfContent</p>
+					<a href="#" class="card-link">Читать полностью...</a>
 				</div>
-				<div class="card-footer bg-transparent">
+				<div class="card-footer bg-transparent" style="min-height: 40px">
 					@foreach (var tagName in article.TagNames)
 					{
 						<span class="badge text-bg-secondary">@tagName</span>

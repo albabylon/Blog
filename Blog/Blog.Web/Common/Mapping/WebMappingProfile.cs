@@ -19,7 +19,8 @@ namespace Blog.Web.Common.Mapping
             CreateMap<ProfileEditViewModel, EditUserDTO>();
 
             CreateMap<ArticleDTO, ArticleViewModel>()
-                .ForMember(d => d.TagNames, opt => opt.MapFrom(s => s.Tags.Select(t => t.Name)));
+                .ForMember(d => d.TagNames, opt => opt.MapFrom(s => s.Tags.Select(t => t.Name)))
+                .ForMember(d => d.PartOfContent, opt => opt.MapFrom(s => string.Join("", s.Content.Take(150))));
             CreateMap<ArticleViewModel, CreateArticleDTO>();
             CreateMap<ArticleEditViewModel, EditArticleDTO>();
 

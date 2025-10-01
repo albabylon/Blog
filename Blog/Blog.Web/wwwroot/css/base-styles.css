@@ -1,4 +1,10 @@
-﻿.avatar-35 {
+﻿.block-main {
+    margin: 0px 0 0px 0;
+    padding: 100px 0 50px 0;
+    align-content: center;
+}
+
+.avatar-35 {
     width: 35px;
     height: 35px;
 }
