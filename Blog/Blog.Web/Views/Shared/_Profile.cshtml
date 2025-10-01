@@ -1,0 +1,20 @@
+﻿@using Blog.Application.Contracts.Interfaces;
+@using System.Security.Claims
+@inject IUserService UserService;
+
+
+<div>
+    @if (UserService.IsLogged(User))
+    {
+        <form method="get" asp-controller="Profile" asp-action="Index">
+            <button class="btn btn-outline-dark pb-sm-1" type="submit">
+                <div class="d-flex flex-row align-items-center justify-content-center">
+                    <p class="m-0">Личный кабинет 
+                        <strong> @User.FindFirstValue(ClaimTypes.Name)</strong>
+                        <img src="../images/avatar/avatar-deafult.png" class="avatar-25 rounded-circle" alt="avatar-image">
+                    </p>
+                </div>
+            </button>
+        </form>
+    }
+</div>
