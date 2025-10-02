@@ -44,6 +44,12 @@ namespace Blog.Application.Services
             return _mapper.Map<IEnumerable<CommentDTO>>(result);
         }
 
+        public async Task<IEnumerable<CommentDTO>> GetAllCommentsByArticleAsync(int articleId)
+        {
+            var result = await _commentRepos.GetAllByArticleId(articleId);
+            return _mapper.Map<IEnumerable<CommentDTO>>(result);
+        }
+
         public async Task CreateCommentAsync(CreateCommentDTO dto, int articleId, string authorId)
         {           
             var article = await _articleRepos.Get(articleId)

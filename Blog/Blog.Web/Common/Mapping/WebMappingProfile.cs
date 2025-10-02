@@ -28,6 +28,8 @@ namespace Blog.Web.Common.Mapping
             CreateMap<TagViewModel, CreateTagDTO>();
             CreateMap<TagEditViewModel, EditTagDTO>();
 
+            CreateMap<CommentDTO, CommentViewModel>()
+                .ForMember(d => d.User, opt => opt.MapFrom(s => s.AuthorName));
             CreateMap<CommentViewModel, CreateCommentDTO>();
             CreateMap<CommentEditViewModel, EditCommentDTO>();
         }

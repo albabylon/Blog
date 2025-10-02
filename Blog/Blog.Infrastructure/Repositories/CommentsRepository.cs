@@ -26,5 +26,13 @@ namespace Blog.Infrastructure.Repositories
                             .Include(c => c.User)
                             .ToListAsync();
         }
+
+        public async Task<IEnumerable<Comment>> GetAllByArticleId(int articleId)
+        {
+            return await Set.Include(c => c.Article)
+                            .Include(c => c.User)
+                            .Where(c => c.ArticleId == articleId)
+                            .ToListAsync();
+        }
     }
 }

@@ -39,5 +39,14 @@ namespace Blog.Infrastructure.Repositories
                             .OrderByDescending(a => a.CreatedAt)
                             .ToListAsync();
         }
+
+        public override async Task<Article> Get(int id)
+        {
+            return await Set.Include(a => a.ArticleTags)
+                            .ThenInclude(ac => ac.Tag)
+                            .Include(a => a.Author)
+                            .FirstOrDefaultAsync(a => a.Id == id)
+                            ?? throw new Exception($"статьи по id {id} не найдены"); ;
+        }
     }
 }

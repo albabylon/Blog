@@ -1,29 +1,41 @@
-﻿@model Blog.Web.ViewModels.Article.ArticleViewModel
+﻿@model Blog.Web.ViewModels.Article.ArticleMainViewModel
 
 
 @{
-	ViewData["Title"] = "Статьи";
+	ViewData["Title"] = @Model.Article.Title;
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
-<div class="block-article align-top justify-content-center">
-	<div class="card border-primary text-secondary-emphasis">
-		<div class="card-header border-primary bg-transparent">
-			<div class="d-flex flex-row">
-				<img src="../images/avatar/avatar-deafult.png" class="avatar-25 rounded-circle me-2" alt="avatar-image">
-				@Model.AuthorName
-			</div>
-			<div class="card-footer bg-transparent" style="min-height: 40px">
-				@foreach (var tagName in @Model.TagNames)
-				{
-					<span class="badge text-bg-secondary">@tagName</span>
-				}
-			</div>
+<div class="container-fluid align-top justify-content-center">
+	<div class="d-flex justify-content-between">
+		<div class="d-inline">
+			<img src="../images/avatar/avatar-deafult.png" class="avatar-25 rounded-circle me-2" alt="avatar-image">
+			@Model.Article.AuthorName
 		</div>
-		<div class="card-body">
-			<h5 class="card-title">@Model.Title</h5>
-			<p class="card-text">@Model.Content</p>
+		<div class="card-footer bg-transparent" style="min-height: 40px">
+			@foreach (var tagName in @Model.Article.TagNames)
+			{
+				<span class="badge text-bg-secondary">@tagName</span>
+			}
 		</div>
+	</div>
+
+
+	<div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
+		<h1 class="display-4 fst-normal">@Model.Article.Title</h1>
+		<p class="lead my-3">@Model.Article.Content</p>
+	</div>
+
+
+	<div>
+		@foreach (var comment in @Model.Comments)
+		{
+			<div>
+				<h5>@comment.User</h5>
+				<p>@comment.Content</p>
+				<p>@comment.CreatedAt</p>
+			</div>
+		}
 	</div>
 </div>

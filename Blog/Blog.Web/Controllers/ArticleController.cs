@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Blog.Application.Contracts.Interfaces;
 using Blog.Application.Exceptions;
+using Blog.Domain.Entities;
 using Blog.Domain.Identity;
 using Blog.DTOs.Article;
 using Blog.Web.ViewModels.Article;
+using Blog.Web.ViewModels.Comment;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -14,12 +16,14 @@ namespace Blog.Web.Controllers
     public class ArticleController : Controller
     {
         private readonly IArticleService _articleService;
+        private readonly ICommentService _commentService;
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public ArticleController(IArticleService articleService, IUserService userService, IMapper mapper)
+        public ArticleController(IArticleService articleService, ICommentService commentService, IUserService userService, IMapper mapper)
         {
             _articleService = articleService;
+            _commentService = commentService;
             _userService = userService;
             _mapper = mapper;
         }
@@ -29,9 +33,19 @@ namespace Blog.Web.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Index(int id)
         {
-            var dto = await _articleService.GetArticleAsync(id);
-            var model = _mapper.Map<ArticleViewModel>(dto);
-            return View("/Views/Article/Article.cshtml", model);
+            var articleDto = await _articleService.GetArticleAsync(id);
+            var articleModel = _mapper.Map<ArticleViewModel>(articleDto);
+
+            var commentDto = await _commentService.GetAllCommentsByArticleAsync(articleDto.Id);
+            var commentModel = _mapper.Map<IEnumerable<CommentViewModel>>(commentDto);
+
+            var mainModel = new ArticleMainViewModel()
+            {
+                Article = articleModel,
+                Comments = commentModel
+            };
+
+            return View("/Views/Article/Article.cshtml", mainModel);
         }
 
         [HttpGet]
