@@ -1,6 +1,5 @@
 ﻿@model Blog.Web.ViewModels.Article.ArticleMainViewModel
 
-
 @{
 	ViewData["Title"] = @Model.Article.Title;
 	Layout = "~/Views/Shared/_Layout.cshtml";
@@ -27,14 +26,28 @@
 		<p class="lead my-3">@Model.Article.Content</p>
 	</div>
 
-
 	<div>
+		<form method="post" asp-controller="Comment" asp-action="Create">
+			<textarea @* asp-for="dad"  *@class="form-control mb-4">
+            </textarea>
+			<button type="button" class="btn btn-primary">Оставить комментарий</button>
+		</form>
+	</div>
+
+	<div class="container-fluid align-top justify-content-center">
 		@foreach (var comment in @Model.Comments)
 		{
-			<div>
-				<h5>@comment.User</h5>
-				<p>@comment.Content</p>
-				<p>@comment.CreatedAt</p>
+			<div class="d-flex justify-content-between my-4">
+				<div>
+					<div class="d-flex flex-row align-items-center justify-content-start">
+						<img src="../images/avatar/avatar-deafult.png" class="avatar-25 rounded-circle" alt="avatar-image">
+						<p class="mb-0 mx-2"><strong class="">@comment.User</strong></p>
+						<p class="mb-0 text-muted">@comment.CreatedAt.ToString("g")</p>
+						<button type="button" class="btn bi-pen ms-2 p-0 border-0 bg-transparent" />
+					</div>
+					<p class="text-black my-1">@comment.Content</p>
+				</div>
+				<hr/>
 			</div>
 		}
 	</div>
