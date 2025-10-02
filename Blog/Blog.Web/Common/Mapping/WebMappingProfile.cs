@@ -20,11 +20,15 @@ namespace Blog.Web.Common.Mapping
             CreateMap<ProfileEditViewModel, EditUserDTO>();
 
             CreateMap<ArticleDTO, ArticleViewModel>()
-                .ForMember(d => d.TagNames, opt => opt.MapFrom(s => s.Tags.Select(t => t.Name)))
+                .ForMember(d => d.Tags, opt => opt.MapFrom(s => s.Tags))
+                .ForMember(d => d.TagNames, opt => opt.MapFrom(s => s.Tags.Select(x => x.Name)))
                 .ForMember(d => d.PartOfContent, opt => opt.MapFrom(s => string.Join("", s.Content.Take(150))));
             CreateMap<ArticleViewModel, CreateArticleDTO>();
+            CreateMap<ArticleViewModel, EditArticleDTO>();
             CreateMap<EditArticleDTO, ArticleViewModel>();
 
+            CreateMap<TagViewModel, TagDTO>();
+            CreateMap<TagDTO, TagViewModel>();
             CreateMap<TagViewModel, CreateTagDTO>();
             CreateMap<TagEditViewModel, EditTagDTO>();
 

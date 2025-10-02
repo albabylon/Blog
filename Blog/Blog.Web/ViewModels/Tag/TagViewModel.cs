@@ -5,6 +5,7 @@ namespace Blog.Web.ViewModels.Tag
 {
     public class TagViewModel : IValidatableObject
     {
+        public int Id { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
 

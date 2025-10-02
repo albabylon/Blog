@@ -44,6 +44,8 @@ namespace Blog.Web.Controllers
             return Json(result);
         }
 
+
+
         [HttpPost]
         [Route("create")]
         public async Task<IActionResult> Create(TagViewModel model)
@@ -57,7 +59,7 @@ namespace Blog.Web.Controllers
             return Content("Ошибка");
         }
 
-        [HttpPut]
+        [HttpPost]
         [Route("edit/{id}")]
         [Authorize(Roles = $"{SystemRoles.User}, {SystemRoles.Moderator}, {SystemRoles.Admin}")]
         public async Task<IActionResult> Edit(TagEditViewModel model, int id)
@@ -78,7 +80,7 @@ namespace Blog.Web.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpPost]
         [Route("delete/{id}")]
         [Authorize(Roles = $"{SystemRoles.User}, {SystemRoles.Moderator}, {SystemRoles.Admin}")]
         public async Task<IActionResult> Delete(int id)

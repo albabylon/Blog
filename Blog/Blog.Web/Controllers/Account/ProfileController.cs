@@ -25,6 +25,7 @@ namespace Blog.Web.Controllers.Account
             _articleService = articleService;
         }
 
+
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -40,11 +41,12 @@ namespace Blog.Web.Controllers.Account
             return View("~/Views/Account/Profile.cshtml", model);
         }
 
+
+
         [HttpGet]
         [Route("edit")]
         public IActionResult Edit()
         {
-            // Редактирование профиля
             return View();
         }
 
@@ -52,7 +54,6 @@ namespace Blog.Web.Controllers.Account
         [Route("edit")]
         public async Task<IActionResult> Edit(ProfileEditViewModel model)
         {
-            // Сохранение изменений профиля
             try
             {
                 var dto = _mapper.Map<EditUserDTO>(model);

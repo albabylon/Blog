@@ -3,8 +3,10 @@ using Blog.Application.Contracts.Interfaces;
 using Blog.Application.Exceptions;
 using Blog.Domain.Identity;
 using Blog.DTOs.Article;
+using Blog.DTOs.Tag;
 using Blog.Web.ViewModels.Article;
 using Blog.Web.ViewModels.Comment;
+using Blog.Web.ViewModels.Tag;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -91,8 +93,8 @@ namespace Blog.Web.Controllers
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             await _articleService.CreateArticleAsync(dto, userId);
-
-            return Json(dto);
+            
+            return RedirectToAction("Index", "Home");
         }
 
 

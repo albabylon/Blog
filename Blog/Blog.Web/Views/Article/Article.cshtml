@@ -24,7 +24,7 @@
 	<!--Статья-->
 	<div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
 		<h1 class="display-4 fst-normal">@Model.Article.Title</h1>
-		<p class="lead my-3">@Model.Article.Content</p>
+		<div class="lead my-3">@Html.Raw(Model.Article.Content)</div> <!--для сохранения форматирования-->
 	</div>
 
 	<!--Оставить коммент-->

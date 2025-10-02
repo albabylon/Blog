@@ -4,6 +4,7 @@ using Blog.Application.Exceptions;
 using Blog.Domain.Entities;
 using Blog.Domain.Identity;
 using Blog.DTOs.Article;
+using Blog.DTOs.Tag;
 using Blog.Infrastructure.Contracts.Interfaces;
 using Blog.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
@@ -16,9 +17,10 @@ namespace Blog.Application.Services
         private readonly TagsRepository _tagRepos;
         private readonly UserManager<User> _userManager;
         private readonly IUserService _userService;
+        private readonly ITagService _tagService;
         private readonly IMapper _mapper;
 
-        public ArticleService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<User> userManager, IUserService userService)
+        public ArticleService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<User> userManager, IUserService userService, ITagService tagService)
         {
             _articleRepos = unitOfWork.GetRepository<Article>() as ArticlesRepository 
                 ?? throw new Exception();
@@ -27,6 +29,8 @@ namespace Blog.Application.Services
             _userManager = userManager
                 ?? throw new Exception();
             _userService = userService
+                ?? throw new Exception();
+            _tagService = tagService
                 ?? throw new Exception();
             _mapper = mapper;
         }
@@ -65,6 +69,14 @@ namespace Blog.Application.Services
 
             article.Author = user;
             article.AuthorId = authorId;
+
+            if (dto.TagNames.FirstOrDefault() is null || dto.TagNames.Any() == false)
+            {
+                var isTagExist = await _tagService.IsTagNameExistAsync("#без тега");
+                if (isTagExist == false)
+                    await _tagService.CreateTagAsync(new CreateTagDTO() { Name = "#без тега", Description = "" });
+                dto.TagNames = new List<string>() { "#без тега" };
+            }
 
             if (dto.TagNames != null)
             {
