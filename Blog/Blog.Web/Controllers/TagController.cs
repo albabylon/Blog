@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Web.Controllers
 {
-    [Route("[controller]")]
+    [Route("tag")]
     public class TagController : Controller
     {
         private readonly ITagService _tagService;
@@ -37,7 +37,7 @@ namespace Blog.Web.Controllers
         }
 
         [HttpGet]
-        [Route("[action]")]
+        [Route("all")]
         public async Task<IActionResult> All()
         {
             var result = await _tagService.GetAllTagsAsync();
@@ -45,7 +45,7 @@ namespace Blog.Web.Controllers
         }
 
         [HttpPost]
-        [Route("[action]")]
+        [Route("create")]
         public async Task<IActionResult> Create(TagViewModel model)
         {
             if (ModelState.IsValid)
@@ -58,7 +58,7 @@ namespace Blog.Web.Controllers
         }
 
         [HttpPut]
-        [Route("[action]/{id}")]
+        [Route("edit/{id}")]
         [Authorize(Roles = $"{SystemRoles.User}, {SystemRoles.Moderator}, {SystemRoles.Admin}")]
         public async Task<IActionResult> Edit(TagEditViewModel model, int id)
         {
@@ -79,7 +79,7 @@ namespace Blog.Web.Controllers
         }
 
         [HttpDelete]
-        [Route("[action]/{id}")]
+        [Route("delete/{id}")]
         [Authorize(Roles = $"{SystemRoles.User}, {SystemRoles.Moderator}, {SystemRoles.Admin}")]
         public async Task<IActionResult> Delete(int id)
         {

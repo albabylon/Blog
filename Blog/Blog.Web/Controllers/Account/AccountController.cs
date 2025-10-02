@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Web.Controllers.Account
 {
-    [Route("[action]")]
     public class AccountController : Controller
     {
         private readonly IUserService _userService;
@@ -22,6 +21,7 @@ namespace Blog.Web.Controllers.Account
 
 
         [HttpGet]
+        [Route("register")]
         [AllowAnonymous]
         public IActionResult Register()
         {
@@ -30,6 +30,7 @@ namespace Blog.Web.Controllers.Account
         }
 
         [HttpPost]
+        [Route("register")]
         [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
@@ -49,7 +50,10 @@ namespace Blog.Web.Controllers.Account
             return View(model);
         }
 
+
+
         [HttpGet]
+        [Route("login")]
         [AllowAnonymous]
         public IActionResult Login(string? returnUrl = null)
         {
@@ -57,6 +61,7 @@ namespace Blog.Web.Controllers.Account
         }
 
         [HttpPost]
+        [Route("login")]
         [ValidateAntiForgeryToken] //от CSRF-атак
         [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel model)
@@ -94,7 +99,10 @@ namespace Blog.Web.Controllers.Account
             return View(model);
         }
 
+
+
         [HttpPost]
+        [Route("logout")]
         [ValidateAntiForgeryToken]
         [Authorize]
         public async Task<IActionResult> Logout()

@@ -10,7 +10,7 @@ using System.Security.Claims;
 
 namespace Blog.Web.Controllers
 {
-    [Route("[controller]")]
+    [Route("article")]
     public class ArticleController : Controller
     {
         private readonly IArticleService _articleService;
@@ -43,7 +43,7 @@ namespace Blog.Web.Controllers
         }
 
         [HttpGet]
-        [Route("[action]")]
+        [Route("all")]
         public async Task<IActionResult> All([FromQuery(Name = "name")] string? tagName)
         {
             if (tagName is null)
@@ -63,7 +63,7 @@ namespace Blog.Web.Controllers
 
 
         [HttpGet]
-        [Route("[action]")]
+        [Route("create")]
         public ActionResult Create()
         {
             var model = new ArticleViewModel();
@@ -71,7 +71,7 @@ namespace Blog.Web.Controllers
         }
 
         [HttpPost]
-        [Route("[action]")]
+        [Route("create")]
         public async Task<IActionResult> Create(ArticleViewModel model)
         {
             var dto = _mapper.Map<CreateArticleDTO>(model);
@@ -85,7 +85,7 @@ namespace Blog.Web.Controllers
 
 
         [HttpGet]
-        [Route("[action]/{id}")]
+        [Route("edit/{id}")]
         public async Task<IActionResult> Edit(int id)
         {
             var dto = await _articleService.GetArticleAsync(id);
@@ -94,7 +94,7 @@ namespace Blog.Web.Controllers
         }
 
         [HttpPost]
-        [Route("[action]/{id}")]
+        [Route("edit/{id}")]
         [Authorize(Roles = $"{SystemRoles.User}, {SystemRoles.Moderator}, {SystemRoles.Admin}")]
         public async Task<IActionResult> Edit(ArticleViewModel model, int id)
         {
@@ -122,7 +122,7 @@ namespace Blog.Web.Controllers
 
 
         [HttpPost]
-        [Route("[action]/{id}")]
+        [Route("delete/{id}")]
         [Authorize(Roles = $"{SystemRoles.User}, {SystemRoles.Moderator}, {SystemRoles.Admin}")]
         public async Task<IActionResult> Delete(int id)
         {

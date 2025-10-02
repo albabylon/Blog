@@ -9,7 +9,7 @@ using System.Security.Claims;
 
 namespace Blog.Web.Controllers
 {
-    [Route("[controller]")]
+    [Route("comment")]
     public class CommentController : Controller
     {
         private readonly ICommentService _commentService;
@@ -37,7 +37,7 @@ namespace Blog.Web.Controllers
         }
 
         [HttpGet]
-        [Route("[action]")]
+        [Route("all")]
         public async Task<IActionResult> All()
         {
             var result = await _commentService.GetAllCommentsAsync();
@@ -45,7 +45,7 @@ namespace Blog.Web.Controllers
         }
 
         [HttpPost]
-        [Route("[action]/{articleId}")]
+        [Route("create/{articleId}")]
         public async Task<IActionResult> Create(CommentViewModel model, int articleId)
         {
             var dto = _mapper.Map<CreateCommentDTO>(model);
@@ -59,7 +59,7 @@ namespace Blog.Web.Controllers
         }
 
         [HttpPut]
-        [Route("[action]/{id}")]
+        [Route("edit/{id}")]
         [Authorize(Roles = $"{SystemRoles.User}, {SystemRoles.Moderator}, {SystemRoles.Admin}")]
         public async Task<IActionResult> Edit(CommentViewModel model, int id)
         {
@@ -82,7 +82,7 @@ namespace Blog.Web.Controllers
         }
 
         [HttpDelete]
-        [Route("[action]/{id}")]
+        [Route("delete/{id}")]
         [Authorize(Roles = $"{SystemRoles.User}, {SystemRoles.Moderator}, {SystemRoles.Admin}")]
         public async Task<IActionResult> Delete(int id)
         {

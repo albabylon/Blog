@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Blog.Web.Controllers.Account
 {
     [Authorize(Roles = SystemRoles.Admin)]
-    [Route("[controller]")]
+    [Route("admin")]
     public class AdminController : Controller
     {
         private readonly IUserService _userService;
@@ -15,6 +15,7 @@ namespace Blog.Web.Controllers.Account
         {
             _userService = userService;
         }
+
 
         public async Task<IActionResult> Index()
         {   
@@ -30,7 +31,7 @@ namespace Blog.Web.Controllers.Account
         }
 
         [HttpPost]
-        [Route("[action]")]
+        [Route("delete")]
         public async Task<IActionResult> Delete(string id)
         {
             var result = await _userService.DeleteUserAsync(id);
@@ -40,7 +41,7 @@ namespace Blog.Web.Controllers.Account
         }
 
         [HttpPost]
-        [Route("[action]")]
+        [Route("updaterole")]
         public async Task<IActionResult> UpdateRole(string userId, string role)
         {
             var result = await _userService.UpdateUserRoleAsync(userId, role);

@@ -8,8 +8,14 @@
     height: 25px;
 }
 
-html.profile-page,
-body.profile-page {
+html.fixed-nonsrocll-page,
+body.fixed-nonsrocll-page {
     height: 100%;
     overflow: hidden;
+}
+
+.body-forfooter {
+    max-height: 100vh;
+    overflow-y: auto;
+    padding-bottom: 200px;
 }

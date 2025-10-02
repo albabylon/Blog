@@ -10,7 +10,7 @@ using System.Security.Claims;
 
 namespace Blog.Web.Controllers.Account
 {
-    [Route("[controller]")]
+    [Route("profile")]
     [Authorize]
     public class ProfileController : Controller
     {
@@ -49,6 +49,7 @@ namespace Blog.Web.Controllers.Account
         }
 
         [HttpPost]
+        [Route("edit")]
         public async Task<IActionResult> Edit(ProfileEditViewModel model)
         {
             // Сохранение изменений профиля
