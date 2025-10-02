@@ -7,6 +7,7 @@
 
 
 <div class="container-fluid align-top justify-content-center">
+	<!--Статья инфа-->
 	<div class="d-flex justify-content-between">
 		<div class="d-inline">
 			<img src="../images/avatar/avatar-deafult.png" class="avatar-25 rounded-circle me-2" alt="avatar-image">
@@ -20,19 +21,23 @@
 		</div>
 	</div>
 
-
+	<!--Статья-->
 	<div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
 		<h1 class="display-4 fst-normal">@Model.Article.Title</h1>
 		<p class="lead my-3">@Model.Article.Content</p>
 	</div>
 
-	<div>
-		<form method="post" asp-controller="Comment" asp-action="Create" asp-route-articleId="@Model.Article.Id">
-			<textarea name="Content" class="form-control mb-4"></textarea>
-			<button type="submit" class="btn btn-primary">Оставить комментарий</button>
+	<!--Оставить коммент-->
+	<div class="card">
+		<form class="card-body" method="post" asp-controller="Comment" asp-action="Create" asp-route-articleId="@Model.Article.Id">
+			<textarea name="Content" class="form-control mb-2"></textarea>
+			<div class="d-flex justify-content-end">
+				<button type="submit" class="btn btn-primary">Оставить комментарий</button>
+			</div>
 		</form>
 	</div>
 
+	<!--Комментарии-->
 	<div class="container-fluid align-top justify-content-center">
 		@foreach (var comment in @Model.Comments)
 		{

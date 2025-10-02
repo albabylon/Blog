@@ -24,6 +24,7 @@ namespace Blog.Infrastructure.Repositories
         {
             return await Set.Include(c => c.Article)
                             .Include(c => c.User)
+                            .OrderByDescending(a => a.CreatedAt)
                             .ToListAsync();
         }
 
@@ -32,6 +33,7 @@ namespace Blog.Infrastructure.Repositories
             return await Set.Include(c => c.Article)
                             .Include(c => c.User)
                             .Where(c => c.ArticleId == articleId)
+                            .OrderByDescending(a => a.CreatedAt)
                             .ToListAsync();
         }
     }
