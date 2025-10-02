@@ -44,6 +44,8 @@ namespace Blog.Web.Controllers
             return Json(result);
         }
 
+
+
         [HttpPost]
         [Route("create/{articleId}")]
         public async Task<IActionResult> Create(CommentViewModel model, int articleId)
@@ -55,7 +57,7 @@ namespace Blog.Web.Controllers
                 return BadRequest("Пользователь не найден");
 
             await _commentService.CreateCommentAsync(dto, articleId, userId);
-            return Json(dto);
+            return RedirectToAction("Article", "Index");
         }
 
         [HttpPut]

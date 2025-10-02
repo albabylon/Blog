@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Blog.Application.Contracts.Interfaces;
 using Blog.Application.Exceptions;
-using Blog.Domain.Entities;
 using Blog.Domain.Identity;
 using Blog.DTOs.Article;
 using Blog.Web.ViewModels.Article;
@@ -95,7 +94,7 @@ namespace Blog.Web.Controllers
 
             return Json(dto);
         }
-        
+
 
 
         [HttpGet]
@@ -113,7 +112,7 @@ namespace Blog.Web.Controllers
         public async Task<IActionResult> Edit(ArticleViewModel model, int id)
         {
             var dto = _mapper.Map<EditArticleDTO>(model);
-            
+
             if (id != dto.Id)
                 return BadRequest("Несоответствие ID статьи");
 

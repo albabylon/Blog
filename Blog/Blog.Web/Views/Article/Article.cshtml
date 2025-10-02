@@ -27,10 +27,9 @@
 	</div>
 
 	<div>
-		<form method="post" asp-controller="Comment" asp-action="Create">
-			<textarea @* asp-for="dad"  *@class="form-control mb-4">
-            </textarea>
-			<button type="button" class="btn btn-primary">Оставить комментарий</button>
+		<form method="post" asp-controller="Comment" asp-action="Create" asp-route-articleId="@Model.Article.Id">
+			<textarea name="Content" class="form-control mb-4"></textarea>
+			<button type="submit" class="btn btn-primary">Оставить комментарий</button>
 		</form>
 	</div>
 
