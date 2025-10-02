@@ -57,7 +57,7 @@ namespace Blog.Web.Controllers
                 return BadRequest("Пользователь не найден");
 
             await _commentService.CreateCommentAsync(dto, articleId, userId);
-            return RedirectToAction("Article", "Index");
+            return RedirectToAction("Index", "Article", new { id = articleId });
         }
 
         [HttpPut]
