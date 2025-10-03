@@ -37,7 +37,7 @@ namespace Blog.Web.Controllers
         {
             var articleDto = await _articleService.GetArticleAsync(id);
             var articleModel = _mapper.Map<ArticleViewModel>(articleDto);
-
+            
             var commentDto = await _commentService.GetAllCommentsByArticleAsync(articleDto.Id);
             var commentModel = _mapper.Map<IEnumerable<CommentViewModel>>(commentDto);
 
@@ -82,8 +82,8 @@ namespace Blog.Web.Controllers
         [Route("create")]
         public ActionResult Create()
         {
-            var model = new ArticleViewModel();
-            return View("/Views/Article/ArticleEdit.cshtml", model);
+            var model = new ArticleViewModel() { Tags = new List<TagViewModel>(), TagNames = new List<string>() };
+            return View("/Views/Article/ArticleCreate.cshtml", model);
         }
 
         [HttpPost]
@@ -106,7 +106,13 @@ namespace Blog.Web.Controllers
         {
             var dto = await _articleService.GetArticleAsync(id);
             var model = _mapper.Map<ArticleViewModel>(dto);
-            return View("/Views/Article/ArticleEdit.cshtml", model);
+
+            foreach (var tag in model.Tags)
+            {
+                tag.IsCheked = true;
+            }
+
+            return View("/Views/Article/ArticleCreate.cshtml", model);
         }
 
         [HttpPost]

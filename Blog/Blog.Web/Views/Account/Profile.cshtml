@@ -1,4 +1,5 @@
 ﻿@using Blog.Web.ViewModels.Account
+@using Blog.Web.ViewModels.Tag
 @model ProfileViewModel;
 
 @{
@@ -8,6 +9,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<partial name="~/Views/Shared/_TagCreate.cshtml" model="new TagViewModel()" />
 
 <div class="container-fluid h-100">
     <div class="row">
@@ -28,6 +30,7 @@
                         <form method="get" asp-controller="Article" asp-action="Create">
                             <button class="btn btn-primary w-100" type="submit">Создать статью</button>
                         </form>
+                        <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#tagModal">Создать тег</button>
                         <form method="get" asp-controller="Profile" asp-action="Edit">
                             <button class="btn btn-outline-secondary w-100" type="submit">Редактировать профиль</button>
                         </form>

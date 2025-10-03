@@ -28,6 +28,8 @@ namespace Blog.Web.Controllers
             return Json(dto);
         }
 
+
+
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> Get(int id)
@@ -46,6 +48,13 @@ namespace Blog.Web.Controllers
 
 
 
+        [HttpGet]
+        [Route("create")]
+        public IActionResult Create()
+        {
+            return PartialView("_TagCreate", new TagViewModel());
+        }
+
         [HttpPost]
         [Route("create")]
         public async Task<IActionResult> Create(TagViewModel model)
@@ -54,15 +63,17 @@ namespace Blog.Web.Controllers
             {
                 var dto = _mapper.Map<CreateTagDTO>(model);
                 await _tagService.CreateTagAsync(dto);
-                return Json(dto);
+                return RedirectToAction("Index", "Profile");
             }
-            return Content("Ошибка");
+            return BadRequest("Ошибка");
         }
+
+
 
         [HttpPost]
         [Route("edit/{id}")]
         [Authorize(Roles = $"{SystemRoles.User}, {SystemRoles.Moderator}, {SystemRoles.Admin}")]
-        public async Task<IActionResult> Edit(TagEditViewModel model, int id)
+        public async Task<IActionResult> Edit(TagViewModel model, int id)
         {
             var dto = _mapper.Map<EditTagDTO>(model);
             

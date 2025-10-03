@@ -27,9 +27,14 @@
 
                         <div class="mb-5">
                             <label class="form-label">Добавить тег</label>
-                            <div class="input-group mb-2">
-                                <input asp-for="TagNames" type="text" class="form-control">
-                                <button type="button" class="btn btn-outline-secondary">Добавить</button>
+                            <div>
+                                @foreach (var tag in Model.Tags)
+                                {
+                                    <div class="form-check form-check-inline">
+                                        <input asp-for="@tag.IsCheked" type="checkbox" class="form-check-input">
+                                        <label class="form-check-label">@tag.Name</label>
+                                    </div>
+                                }
                             </div>
                         </div>
 
