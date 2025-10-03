@@ -45,9 +45,14 @@ namespace Blog.Web.Controllers.Account
 
         [HttpGet]
         [Route("edit")]
-        public IActionResult Edit()
+        public async Task<IActionResult> Edit()
         {
-            return View();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var dto = await _userService.GetUserByIdAsync(userId);
+
+            var model = _mapper.Map<ProfileEditViewModel>(dto);
+
+            return View("/Views/Account/ProfileEdit.cshtml", model);
         }
 
         [HttpPost]
@@ -60,14 +65,12 @@ namespace Blog.Web.Controllers.Account
 
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 await _userService.EditUserAsync(dto, userId);
-                return Json(dto);
-                //return View("Edit", editUser);
+                return RedirectToAction("Index");
             }
             catch (UserProblemException ex)
             {
                 ModelState.AddModelError("", "Пользователь не найден");
                 return Content($"{ex.Message}");
-                //return View("Views/Home/Index.cshtml");
             }
         }
     }

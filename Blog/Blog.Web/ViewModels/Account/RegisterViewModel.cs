@@ -1,10 +1,16 @@
 ﻿using Blog.Domain.Identity;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Blog.Web.ViewModels.Account
 {
     public class RegisterViewModel
     {
+        public RegisterViewModel()
+        {
+            ProfilePictureUrl = "../images/avatar/avatar-deafult.png";
+        }
+
         [Required(ErrorMessage = "Поле Email обязательно для заполнения")]
         [EmailAddress]
         [Display(Name = "Email", Prompt = "example@example.com")]
@@ -33,6 +39,7 @@ namespace Blog.Web.ViewModels.Account
         public string? Bio { get; set; }
 
 
+        [DefaultValue("../images/avatar/avatar-deafult.png")]
         public string? ProfilePictureUrl { get; set; }
     }
 }

@@ -25,9 +25,12 @@
                             <textarea asp-for="Content" class="form-control" rows="10" id="contentEditor"></textarea>
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-5">
                             <label class="form-label">Добавить тег</label>
-                            <input asp-for="TagNames" class="form-control" />
+                            <div class="input-group mb-2">
+                                <input asp-for="TagNames" type="text" class="form-control">
+                                <button type="button" class="btn btn-outline-secondary">Добавить</button>
+                            </div>
                         </div>
 
                         <div class="d-flex justify-content-between">

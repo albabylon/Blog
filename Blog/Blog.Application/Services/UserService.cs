@@ -88,7 +88,7 @@ namespace Blog.Application.Services
             user.ProfilePictureUrl = dto.ProfilePictureUrl;
 
             if (!string.IsNullOrEmpty(dto.PasswordNew))
-                await _userManager.ChangePasswordAsync(user, dto.PasswordOld, dto.PasswordNew);
+                await _userManager.ChangePasswordAsync(user, dto.Password, dto.PasswordNew);
 
             await _userManager.UpdateAsync(user);
 

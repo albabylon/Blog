@@ -2,7 +2,7 @@
 @model ProfileViewModel;
 
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = $"Профиль {Model.Nickname}";
     ViewData["BodyClass"] = "fixed-nonsrocll-page";
     ViewBag.HideFooter = true;
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -11,6 +11,8 @@
 
 <div class="container-fluid h-100">
     <div class="row">
+
+        <!--Профиль-->
         <div class="col-md-3">
             <div class="card sticky-top" style="top: 1rem;">
                 <div class="card-body text-center">
@@ -19,13 +21,14 @@
                     <h4>@Model.Nickname</h4>
                     <p class="text-muted">@Model.Email</p>
                     <p class="small">@string.Join(", ", @Model.Role)</p>
+                    <p class="small">Обо мне: @Model.Bio</p>
                     <p class="small">Дата регистрации: @Model.CreatedAt?.ToString("D")</p>
 
                     <div class="d-grid gap-2 mt-3">
                         <form method="get" asp-controller="Article" asp-action="Create">
                             <button class="btn btn-primary w-100" type="submit">Создать статью</button>
                         </form>
-                        <form method="get" asp-controller="Account" asp-action="Edit">
+                        <form method="get" asp-controller="Profile" asp-action="Edit">
                             <button class="btn btn-outline-secondary w-100" type="submit">Редактировать профиль</button>
                         </form>
                     </div>
@@ -33,7 +36,7 @@
             </div>
         </div>
 
-
+        <!--Список статей-->
         <div class="col-md-9 body-forfooter">
             <div style="position: sticky; top: 0; z-index: 10;" class="bg-light">
                 <h3>Мои статьи</h3>

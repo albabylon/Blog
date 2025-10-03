@@ -70,6 +70,7 @@ namespace Blog.Application.Services
             article.Author = user;
             article.AuthorId = authorId;
 
+            //мб потом заменить через валидацию viewmodel
             if (dto.TagNames.FirstOrDefault() is null || dto.TagNames.Any() == false)
             {
                 var isTagExist = await _tagService.IsTagNameExistAsync("#без тега");

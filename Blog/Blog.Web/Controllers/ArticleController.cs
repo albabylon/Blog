@@ -4,6 +4,7 @@ using Blog.Application.Exceptions;
 using Blog.Domain.Identity;
 using Blog.DTOs.Article;
 using Blog.DTOs.Tag;
+using Blog.Web.ViewModels.Account;
 using Blog.Web.ViewModels.Article;
 using Blog.Web.ViewModels.Comment;
 using Blog.Web.ViewModels.Tag;
@@ -145,7 +146,8 @@ namespace Blog.Web.Controllers
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 await _articleService.DeleteArticleAsync(id, userId);
-                return View("/Views/Account/Profile.cshtml");
+
+                return RedirectToAction("Index", "Profile");
             }
             catch (UnauthorizedAccessException ex)
             {
