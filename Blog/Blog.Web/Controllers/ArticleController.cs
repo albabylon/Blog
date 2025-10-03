@@ -107,11 +107,6 @@ namespace Blog.Web.Controllers
             var dto = await _articleService.GetArticleAsync(id);
             var model = _mapper.Map<ArticleViewModel>(dto);
 
-            foreach (var tag in model.Tags)
-            {
-                tag.IsCheked = true;
-            }
-
             return View("/Views/Article/ArticleCreate.cshtml", model);
         }
 

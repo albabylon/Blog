@@ -1,0 +1,119 @@
+﻿@model Blog.Web.ViewModels.Account.AdminViewModel
+
+@{
+    ViewData["Title"] = "Панель-админ";
+}
+
+
+<div class="container mt-4">
+    <h2>Панель управления</h2>
+    
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="articles-tab" data-bs-toggle="tab" data-bs-target="#articles" type="button" role="tab">Статьи</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab">Пользователи</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tags-tab" data-bs-toggle="tab" data-bs-target="#tags" type="button" role="tab">Теги</button>
+        </li>
+    </ul>
+    
+    <div class="tab-content" id="myTabContent">
+        <!-- Вкладка статей -->
+        <div class="tab-pane fade show active" id="articles" role="tabpanel">
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <h4>Список статей</h4>
+                <a asp-controller="Article" asp-action="Create" class="btn btn-success btn-sm">Добавить статью</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Название</th>
+                            <th>Дата создания</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var article in Model.Articles)
+                        {
+                            <tr>
+                                <td>@article.Title</td>
+                                <td>
+                                    <a asp-controller="Article" asp-action="Edit" asp-route-id="@article.Id" class="btn btn-primary btn-sm">Редактировать</a>
+                                    <form asp-controller="Article" asp-action="Delete" asp-route-id="@article.Id" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Вы уверены?')">Удалить</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Вкладка пользователей -->
+        <div class="tab-pane fade" id="users" role="tabpanel">
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <h4>Список пользователей</h4>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Email/Имя</th>
+                            <th>Дата регистрации</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model.Users)
+                        {
+                            <tr>
+                                <td>@user.Email</td>
+                                <td>@user.CreatedAt?.ToString("D")</td>
+                                <td>
+                                    <a asp-controller="User" asp-action="Edit" class="btn btn-primary btn-sm">Редактировать</a>
+                                    <form asp-controller="User" asp-action="Delete" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Вы уверены?')">Удалить</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Вкладка тегов -->
+        <div class="tab-pane fade" id="tags" role="tabpanel">
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <h4>Список тегов</h4>
+                <a asp-controller="Tag" asp-action="Create" class="btn btn-success btn-sm">Добавить тег</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Название тега</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var tag in Model.Tags)
+                        {
+                            <tr>
+                                <td>@tag.Name</td>
+                                <td>
+                                    <a asp-controller="Tag" asp-action="Edit" asp-route-id="@tag.Id" class="btn btn-primary btn-sm">Редактировать</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

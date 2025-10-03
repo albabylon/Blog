@@ -1,0 +1,12 @@
+﻿@using Blog.Application.Contracts.Interfaces;
+@using Blog.Domain.Identity
+@inject IUserService UserService;
+
+@if (UserService.IsLogged(User) && User.IsInRole(SystemRoles.Admin) || User.IsInRole(SystemRoles.Moderator))
+{
+    <div>
+        <form method="get" asp-controller="Admin" asp-action="Index">
+            <button class="btn btn-outline-secondary" type="submit">Админ</button>
+        </form>
+    </div>
+}

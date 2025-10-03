@@ -8,7 +8,6 @@ namespace Blog.Web.ViewModels.Tag
         public int Id { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
-        public bool IsCheked { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

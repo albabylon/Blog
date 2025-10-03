@@ -31,7 +31,7 @@
                                 @foreach (var tag in Model.Tags)
                                 {
                                     <div class="form-check form-check-inline">
-                                        <input asp-for="@tag.IsCheked" type="checkbox" class="form-check-input">
+                                        @* <input asp-for="" type="checkbox" class="form-check-input"> *@
                                         <label class="form-check-label">@tag.Name</label>
                                     </div>
                                 }
