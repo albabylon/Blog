@@ -112,7 +112,6 @@ namespace Blog.Web.Controllers
 
         [HttpPost]
         [Route("edit/{id}")]
-        [Authorize(Roles = $"{SystemRoles.User}, {SystemRoles.Moderator}, {SystemRoles.Admin}")]
         public async Task<IActionResult> Edit(ArticleViewModel model, int id)
         {
             var dto = _mapper.Map<EditArticleDTO>(model);
@@ -140,7 +139,6 @@ namespace Blog.Web.Controllers
 
         [HttpPost]
         [Route("delete/{id}")]
-        [Authorize(Roles = $"{SystemRoles.User}, {SystemRoles.Moderator}, {SystemRoles.Admin}")]
         public async Task<IActionResult> Delete(int id)
         {
             try

@@ -1,0 +1,47 @@
+﻿@using Blog.Web.ViewModels.Account
+@model ProfileViewModel;
+
+@{
+    ViewData["Title"] = $"Профиль {Model.Nickname}";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container-fluid h-100">
+    <div class="row">
+        <!--Профиль-->
+        <div>
+            <div class="card my-3">
+                <div class="card-body text-center">
+                    <img src="../images/avatar/avatar-deafult.png" class="rounded-circle img-fluid border mb-3"
+                         alt="avatar" style="max-width: 150px;">
+                    <h4>@Model.Nickname</h4>
+                    <p class="small">@string.Join(", ", @Model.Role)</p>
+                    <p class="small">Обо мне: @Model.Bio</p>
+                    <p class="small">Дата регистрации: @Model.CreatedAt?.ToString("D")</p>
+                </div>
+            </div>
+            <div>
+                @if (Model.Articles.Any())
+                {
+                    <div class="list-group">
+                        @foreach (var article in Model.Articles)
+                        {
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">@article.Title</h5>
+                                    <small>@article.CreatedAt.ToString("D")</small>
+                                </div>
+                                <p class="mb-1">@article.PartOfContent</p>
+                            </a>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <h4>Пока статей нету</h4>
+                }
+            </div>
+        </div>
+    </div>
+</div>

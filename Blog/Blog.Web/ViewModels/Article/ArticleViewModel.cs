@@ -1,5 +1,4 @@
-﻿using Blog.Domain.Entities;
-using Blog.Web.ViewModels.Tag;
+﻿using Blog.Web.ViewModels.Tag;
 
 namespace Blog.Web.ViewModels.Article
 {
@@ -10,6 +9,7 @@ namespace Blog.Web.ViewModels.Article
         public string PartOfContent { get; set; }
         public string Content { get; set; }
         public string AuthorName { get; set; }
+        public DateTime CreatedAt { get; set; }
         public IEnumerable<TagViewModel> Tags { get; set; }
         public IEnumerable<string> TagNames { get; set; }
         public bool IsPublished { get; set; } = true;

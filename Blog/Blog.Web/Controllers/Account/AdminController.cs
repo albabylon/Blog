@@ -1,15 +1,19 @@
 ﻿using AutoMapper;
 using Blog.Application.Contracts.Interfaces;
+using Blog.Application.Exceptions;
 using Blog.Domain.Identity;
+using Blog.DTOs.Article;
+using Blog.DTOs.User;
 using Blog.Web.ViewModels.Account;
 using Blog.Web.ViewModels.Article;
 using Blog.Web.ViewModels.Tag;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Blog.Web.Controllers.Account
 {
-    [Authorize(Roles = SystemRoles.Admin)]
+    [Authorize(Roles = $"{SystemRoles.Moderator}, {SystemRoles.Admin}")]
     [Route("admin")]
     public class AdminController : Controller
     {
@@ -49,22 +53,121 @@ namespace Blog.Web.Controllers.Account
         }
 
 
-        [HttpGet("{userId}")]
-        public async Task<IActionResult> GetUser(string userId)
+        //Users
+        [HttpGet("user/{id}")]
+        public async Task<IActionResult> GetUser(string id)
         {
-            var allUsers = await _userService.GetUserByIdAsync(userId);
-            return Json(allUsers);
+            var userId = id;
+            
+            var user = await _userService.GetUserByIdAsync(userId);
+            var model = _mapper.Map<ProfileViewModel>(user);
+
+            var articles = await _articleService.GetAllArticlesByAuthorAsync(userId);
+            model.Articles = _mapper.Map<IEnumerable<ArticleViewModel>>(articles);
+
+            return View("/Views/Account/User.cshtml", model);
+        }
+
+        [HttpGet]
+        [Route("edit/user/{id}")]
+        public async Task<IActionResult> EditUser(string id)
+        {
+            var userId = id;
+            
+            var dto = await _userService.GetUserByIdAsync(userId);
+            var model = _mapper.Map<ProfileEditViewModel>(dto);
+
+            return View("/Views/Account/AdminProfileEdit.cshtml", model);
         }
 
         [HttpPost]
-        [Route("delete")]
-        public async Task<IActionResult> Delete(string id)
+        [Route("edit/user/{id}")]
+        public async Task<IActionResult> EditUser(ProfileEditViewModel model, string id)
         {
-            var result = await _userService.DeleteUserAsync(id);
-            if (result)
-                return Content($"Удален пользователь: {id}");
-            return Content($"Удалить пользователя {id} не получилось");
+            try
+            {
+                var userId = id;
+                var dto = _mapper.Map<EditUserDTO>(model);
+
+                await _userService.EditUserAsync(dto, userId);
+                return RedirectToAction("Index");
+            }
+            catch (UserProblemException ex)
+            {
+                ModelState.AddModelError("", "Пользователь не найден");
+                return Content($"{ex.Message}");
+            }
         }
+
+        [HttpPost]
+        [Route("delete/user/{id}")]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var userId = id;
+
+            var result = await _userService.DeleteUserAsync(userId);
+            if (result)
+                return RedirectToAction("Index");
+
+            return Content($"Удалить пользователя {userId} не получилось");
+        }
+
+        //Roles
+
+        //Articles
+        [HttpGet]
+        [Route("edit/article/{id}")]
+        public async Task<IActionResult> EditArticle(int id)
+        {
+            var dto = await _articleService.GetArticleAsync(id);
+            var model = _mapper.Map<ArticleViewModel>(dto);
+
+            return View("/Views/Account/AdminArticleEdit.cshtml", model);
+        }
+
+        [HttpPost]
+        [Route("edit/article/{id}")]
+        public async Task<IActionResult> EditArticle(ArticleViewModel model, int id)
+        {
+            var dto = _mapper.Map<EditArticleDTO>(model);
+
+            if (id != dto.Id)
+                return BadRequest("Несоответствие ID статьи");
+
+            try
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                await _articleService.EditArticleAsync(dto, userId);
+                return RedirectToAction("Index");
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(new { Error = ex.Message });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Forbid(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("delete/{id}")]
+        public async Task<IActionResult> DeleteArticle(int id)
+        {
+            try
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                await _articleService.DeleteArticleAsync(id, userId);
+
+                return RedirectToAction("Index");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Forbid(ex.Message);
+            }
+        }
+
+        //Tags
 
         [HttpPost]
         [Route("updaterole")]
